@@ -27,6 +27,3 @@ AI-Projects/
 ```
 
 ---
-
-> [!TIP]
-> Use the sidebar (coming in Sprint 2) to navigate through the detailed walkthroughs and configurations of each AI model.
