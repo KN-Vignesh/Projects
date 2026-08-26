@@ -11,6 +11,7 @@ Here you will find cookbooks and guides covering state-of-the-art models and tra
 - **BERT_MODEL**: Notebook and notes demonstrating BERT-based workflows — pretraining/finetuning, tokenization, and typical evaluation metrics (classification/NER/etc.).
 - **CNN Fundamentals (Preprocessing)**: Walkthrough and examples for Convolutional Neural Network preprocessing, architecture basics, and example training for image tasks.
 - **Combined Metric Calculation**: Notebook and README showing how to compute combined evaluation metrics (e.g., weighted F1/accuracy/precision/recall aggregations) across experiments.
+- **Titanic Model**: Exploratory data analysis and predictive modeling using the classic Titanic dataset (located in Data-recipes).
 
 ## 🛠️ Repository Structure
 
@@ -26,12 +27,14 @@ AI-Projects/
 │   ├── BERT_MODEL/
 │   │   └── README.md
 │   │   └── BERT_FineTuning.ipynb (example)
-│   └── CNN-Fundamentals/
+│   ├── CNN-Fundamentals/
+│   │   └── README.md
+│   │   └── CNN_Preprocessing.ipynb (example)
+│   └── Combined_metric_Calc/
 │       └── README.md
-│       └── CNN_Preprocessing.ipynb (example)
-├── Combined_metric_Calc/
-│   └── README.md
-│   └── Combined_metric_Calc.ipynb
+│       └── Combined_metric_Calc.ipynb
+├── Data-recipe/
+│   └── Titanic_Model/
 ├── index.html
 └── README.md
 ```

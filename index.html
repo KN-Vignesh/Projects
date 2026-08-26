@@ -6,32 +6,47 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="A documentation landing page and portfolio for AI Projects.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- docsify-darklight-theme CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css" title="docsify-darklight-theme" type="text/css" />
+  
   <style>
     :root {
-      /* AI Modern Purple / Indigo palette */
+      /* Light theme custom variables */
       --theme-color: #7c3aed;
+      --base-font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --sidebar-width: 280px;
     }
     
-    /* Custom style adjustments */
+    /* Dark theme custom variables */
+    .dark {
+      --theme-color: #a78bfa;
+    }
+    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--base-font-family);
+    }
+
+    .cover-main h1 {
+      font-weight: 700;
+      letter-spacing: -1px;
     }
     
-    .sidebar {
-      width: 280px;
+    .cover-main blockquote {
+      font-size: 1.2rem;
+      font-weight: 400;
     }
-    
-    .content {
-      left: 280px;
-    }
-    
-    /* Smooth transitions and modern layout feel */
+
     .sidebar-nav li a {
       font-size: 15px;
       font-weight: 500;
     }
-    
+
     .markdown-section {
       max-width: 850px;
     }
@@ -50,6 +65,7 @@
       mergeNavbar: true,
       maxLevel: 4,
       subMaxLevel: 2,
+      coverpage: true,
       search: {
         maxAge: 86400000, // Expiration time in milliseconds, default one day
         paths: 'auto',
@@ -57,6 +73,48 @@
         noData: 'No Results!',
         depth: 6,
         hideOtherSidebarContent: false
+      },
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      darklightTheme: {
+        siteFont : 'Inter, sans-serif',
+        defaultTheme : 'dark',
+        codeFontFamily : 'Roboto Mono, Monaco, courier, monospace',
+        bodyFontSize : '16px',
+        dark: {
+          accent: '#a78bfa',
+          toogleBackground : '#ffffff',
+          background: '#0f172a',
+          textColor: '#e2e8f0',
+          codeTextColor : '#ffffff',
+          codeBackgroundColor : '#1e293b',
+          borderColor : '#0d2538',
+          blockQuoteColor : '#858585',
+          highlightColor : '#d22778',
+          sidebarSublink : '#b4b4b4',
+          codeTypeColor : '#ffffff',
+          coverBackground : 'linear-gradient(to left bottom, hsl(236, 50%, 15%) 0%,hsl(236, 50%, 5%) 100%)',
+          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+        },
+        light: {
+          accent: '#7c3aed',
+          toogleBackground : '#0f172a',
+          background: '#ffffff',
+          textColor: '#334155',
+          codeTextColor : '#525252',
+          codeBackgroundColor : '#f8fafc',
+          borderColor : '#e2e8f0',
+          blockQuoteColor : '#858585',
+          highlightColor : '#d22778',
+          sidebarSublink : '#b4b4b4',
+          codeTypeColor : '#091a28',
+          coverBackground : 'linear-gradient(to left bottom, hsl(236, 100%, 95%) 0%,hsl(236, 100%, 99%) 100%)',
+          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+        }
       }
     }
   </script>
@@ -66,7 +124,11 @@
   <!-- Plugins -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   
+  <!-- Dark/Light Theme -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js" type="text/javascript"></script>
+
   <!-- Prism Languages -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
