@@ -9,3 +9,4 @@
 
 - Data Recipes
   - [Titanic Model](Data-recipe/Titanic_Model/README.md)
+  - [House Price Prediction](Data-recipe/House_Price_Prediction/README.md)
