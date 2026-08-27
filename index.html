@@ -2,158 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AI Projects Portfolio</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="A documentation landing page and portfolio for AI Projects.">
+  <title>Vignesh — AI, Data & Engineering</title>
+  <meta name="description" content="Vignesh's AI, data science and engineering portfolio.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  
-  <!-- Google Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- docsify-darklight-theme CSS -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css" title="docsify-darklight-theme" type="text/css" />
-  
-  <style>
-    :root {
-      --theme-color: #60a5fa;
-      --base-font-family: 'Manrope', sans-serif;
-      --mono-font-family: 'IBM Plex Mono', monospace;
-      --sidebar-width: min(280px, 85vw);
-      --content-gutter: clamp(18px, 4vw, 64px);
-      --cover-gutter: clamp(24px, 7vw, 120px);
-      --ink: #f5f5f5;
-      --muted: #9ca3af;
-      --surface: rgba(255, 255, 255, 0.045);
-      --line: rgba(255, 255, 255, 0.1);
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    * { box-sizing: border-box; }
-
-    html { background: #050505; }
-
-    body {
-      background: #080a0d;
-      color: var(--ink);
-      font-family: var(--base-font-family);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 56px 56px;
-      content: '';
-      inset: 0;
-      mask-image: linear-gradient(to bottom, black, transparent 70%);
-      opacity: .35;
-      pointer-events: none;
-      position: fixed;
-      z-index: -1;
-    }
-
-    body::after {
-      background: radial-gradient(circle at 72% 12%, rgba(34, 211, 238, .09), transparent 28rem);
-      content: '';
-      inset: 0;
-      pointer-events: none;
-      position: fixed;
-      z-index: -1;
-    }
-
-    .app-nav {
-      background: rgba(10, 12, 16, .78);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.25);
-      margin: 20px 28px 0 0;
-      padding: 8px 14px;
-      backdrop-filter: blur(16px);
-      z-index: 20;
-    }
-
-    .app-nav a, .app-nav a.active { color: var(--ink); font-size: .78rem; font-weight: 700; }
-    .app-nav a:hover { color: #60a5fa; }
-    .app-nav ul, .app-nav li { margin: 0; }
-
-    .sidebar {
-      background: rgba(8, 10, 13, .88);
-      border-right: 1px solid var(--line);
-      padding-top: 30px;
-      backdrop-filter: blur(14px);
-    }
-
-    .sidebar-nav { padding: 16px 20px; }
-    .sidebar-nav > ul > li > strong, .sidebar-nav > ul > li > p { color: #60a5fa; font-family: var(--mono-font-family); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
-    .sidebar-nav li a { color: var(--muted); font-size: .85rem; font-weight: 600; transition: color .2s, transform .2s; }
-    .sidebar-nav li a:hover, .sidebar-nav li.active > a { color: var(--ink); transform: translateX(3px); }
-
-    .cover.show { background: transparent; min-height: 100vh; }
-    .cover-main { display: grid; grid-template-areas: 'rail title visual' 'rail intro visual' 'rail list visual' 'rail actions visual'; grid-template-columns: 44px minmax(0, .9fr) minmax(360px, 1.1fr); grid-template-rows: auto auto 1fr auto; gap: 0 clamp(28px, 5vw, 90px); max-width: 1440px; min-height: 100vh; padding: 136px var(--cover-gutter) 90px; position: relative; text-align: left; }
-    .cover-main::before { color: rgba(156,163,175,.55); content: '01 / AI PROJECTS'; font-family: var(--mono-font-family); font-size: .65rem; grid-area: rail; letter-spacing: .13em; padding-top: 8px; writing-mode: vertical-rl; }
-    .cover-main > *:not(.cover-wireframe) { max-width: 620px; position: relative; z-index: 1; }
-    .cover-main h1 { align-self: end; color: var(--ink); font-size: clamp(4rem, 8.8vw, 9.5rem); font-weight: 800; grid-area: title; letter-spacing: -0.085em; line-height: .88; margin: 0 0 30px; max-width: 760px; text-wrap: balance; }
-    .cover-main h1::before { color: #60a5fa; content: '/'; display: block; font-family: var(--mono-font-family); font-size: .78rem; font-weight: 400; letter-spacing: 0; line-height: 1; margin-bottom: 26px; }
-    .cover-main blockquote { align-self: start; border: 0; color: var(--muted); font-size: clamp(1rem, 1.55vw, 1.25rem); grid-area: intro; line-height: 1.75; margin: 0; max-width: 490px; padding: 4px 0 28px; }
-    .cover-main .cover-wireframe { align-self: center; grid-area: visual; justify-self: center; }
-    .cover-main blockquote p { margin: 0; }
-    .cover-main ul { align-self: start; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; grid-area: list; line-height: 1.9; margin: 14px 0 30px; padding: 18px 0 0 18px; }
-    .cover-main ul li::marker { color: #22d3ee; }
-    .cover-main > p { grid-area: actions; }
-    .cover-main .button { background: var(--surface); border: 1px solid var(--line); border-radius: 7px; color: var(--ink); font-size: .78rem; font-weight: 700; letter-spacing: .02em; margin: 0 8px 8px 0; padding: 12px 17px; transition: background .2s, border-color .2s, transform .2s; }
-    .cover-main .button:hover { background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.55); transform: translateY(-2px); }
-
-    .cover-wireframe { height: min(48vw, 560px); opacity: .86; perspective: 900px; pointer-events: none; position: absolute; right: 3%; top: 20%; transform: rotate(-9deg) rotateY(-18deg); transform-style: preserve-3d; width: min(48vw, 610px); }
-    .wireframe-plane { border: 1px solid rgba(96,165,250,.4); height: 58%; left: 20%; position: absolute; top: 20%; transform: skewY(-22deg) rotateX(58deg); transform-style: preserve-3d; width: 62%; }
-    .plane-back { border-color: rgba(34,211,238,.2); transform: translateZ(-100px) skewY(-22deg) rotateX(58deg); }
-    .plane-front { box-shadow: 0 0 30px rgba(34,211,238,.07); }
-    .wireframe-line { background: linear-gradient(90deg, transparent, rgba(34,211,238,.7), transparent); height: 1px; position: absolute; transform-origin: left; width: 72%; }
-    .line-one { left: 14%; top: 39%; transform: rotate(23deg); }
-    .line-two { left: 25%; top: 60%; transform: rotate(-18deg); }
-    .line-three { left: 34%; top: 29%; transform: rotate(68deg); width: 44%; }
-    .wireframe-node { background: #60a5fa; border-radius: 50%; box-shadow: 0 0 0 4px rgba(96,165,250,.12), 0 0 18px rgba(34,211,238,.7); height: 6px; position: absolute; width: 6px; }
-    .node-one { left: 20%; top: 36%; } .node-two { left: 74%; top: 35%; } .node-three { left: 31%; top: 67%; } .node-four { left: 78%; top: 69%; } .node-five { background: #8b5cf6; left: 50%; top: 16%; }
-
-    .markdown-section { color: var(--muted); max-width: 980px; padding: 84px var(--content-gutter) 100px; }
-    .markdown-section h1, .markdown-section h2, .markdown-section h3 { color: var(--ink); font-weight: 800; letter-spacing: -.04em; }
-    .markdown-section h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
-    .markdown-section h2 { border-bottom: 1px solid var(--line); font-size: clamp(1.6rem, 3vw, 2.3rem); padding-bottom: 16px; }
-    .markdown-section h3 { font-size: 1.15rem; }
-    .markdown-section p, .markdown-section li { line-height: 1.8; }
-    .markdown-section a { color: #7dd3fc; font-weight: 600; }
-    .markdown-section h2 + ul { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; padding-left: 0; }
-    .markdown-section h2 + ul > li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; transition: border-color .2s, transform .2s, background .2s; }
-    .markdown-section h2 + ul > li:hover { background: rgba(255,255,255,.065); border-color: rgba(96,165,250,.4); transform: translateY(-2px); }
-    .markdown-section code { background: rgba(255,255,255,.06); border: 1px solid var(--line); color: #a5f3fc; font-family: var(--mono-font-family); }
-    .markdown-section pre { background: #0d1117; border: 1px solid var(--line); border-radius: 10px; }
-    .markdown-section table { display: block; max-width: 100%; overflow-x: auto; }
-    .search .search input { background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 7px; color: var(--ink); }
-
-    @media screen and (max-width: 768px) {
-      .app-nav { margin: 12px 14px 0 0; }
-      .cover-main { display: grid; gap: 0; grid-template-areas: 'title' 'intro' 'visual' 'list' 'actions'; grid-template-columns: 1fr; grid-template-rows: auto; min-height: auto; padding: 110px 24px 70px; }
-      .cover-main::before { display: none; }
-      .cover-main h1 { font-size: clamp(2.8rem, 14vw, 4.5rem); }
-      .cover-main .cover-wireframe { height: 280px; margin: 22px -10% 10px auto; opacity: .42; right: auto; top: auto; width: 390px; }
-      .cover-main .button { display: inline-block; }
-      .markdown-section { padding-top: 52px; }
-      .markdown-section h2 + ul { grid-template-columns: 1fr; }
-      .markdown-section table { white-space: nowrap; }
-      .markdown-section code { overflow-wrap: anywhere; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-      .cover-wireframe { transform: none; }
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css" title="docsify-darklight-theme">
+  <link rel="stylesheet" href="assets/portfolio.css">
 </head>
+
 <body>
+  <div class="site-noise" aria-hidden="true"></div>
   <div id="app">Loading...</div>
+
   <script>
     window.$docsify = {
-      name: 'AI Projects',
-      repo: 'KN-Vignesh/AI-Projects',
+      name: 'VIGNESH',
+      repo: 'KN-Vignesh/Projects',
+
+      /*
+       * Important for GitHub Pages:
+       * Keep Docsify route resolution independent from the current
+       * nested hash route. Sidebar links below use explicit #/ routes.
+       */
+      relativePath: false,
       auto2top: true,
       executeScript: true,
       loadSidebar: true,
@@ -162,72 +37,73 @@
       maxLevel: 4,
       subMaxLevel: 2,
       coverpage: true,
+
       search: {
-        maxAge: 86400000, // Expiration time in milliseconds, default one day
+        maxAge: 86400000,
         paths: 'auto',
-        placeholder: 'Search...',
-        noData: 'No Results!',
+        placeholder: 'Search projects...',
+        noData: 'No results',
         depth: 6,
         hideOtherSidebarContent: false
       },
+
       pagination: {
         previousText: 'Previous',
         nextText: 'Next',
         crossChapter: true,
-        crossChapterText: true,
+        crossChapterText: true
       },
+
       darklightTheme: {
-        siteFont : 'Manrope, sans-serif',
-        defaultTheme : 'dark',
-        codeFontFamily : 'Roboto Mono, Monaco, courier, monospace',
-        bodyFontSize : '16px',
+        siteFont: 'Inter, sans-serif',
+        defaultTheme: 'dark',
+        codeFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+        bodyFontSize: '16px',
+
         dark: {
-          accent: '#a78bfa',
-          toogleBackground : '#ffffff',
-          background: '#0f172a',
-          textColor: '#e2e8f0',
-          codeTextColor : '#ffffff',
-          codeBackgroundColor : '#1e293b',
-          borderColor : '#0d2538',
-          blockQuoteColor : '#858585',
-          highlightColor : '#d22778',
-          sidebarSublink : '#b4b4b4',
-          codeTypeColor : '#ffffff',
-          coverBackground : 'linear-gradient(to left bottom, hsl(236, 50%, 15%) 0%,hsl(236, 50%, 5%) 100%)',
-          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+          accent: '#67e8f9',
+          toogleBackground: '#ffffff',
+          background: '#050505',
+          textColor: '#e5e7eb',
+          codeTextColor: '#ffffff',
+          codeBackgroundColor: '#0d1117',
+          borderColor: 'rgba(255,255,255,.1)',
+          blockQuoteColor: '#94a3b8',
+          highlightColor: '#a78bfa',
+          sidebarSublink: '#94a3b8',
+          codeTypeColor: '#ffffff',
+          coverBackground: '#050505',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
         },
+
         light: {
-          accent: '#7c3aed',
-          toogleBackground : '#0f172a',
-          background: '#ffffff',
+          accent: '#0891b2',
+          toogleBackground: '#0f172a',
+          background: '#f8fafc',
           textColor: '#334155',
-          codeTextColor : '#525252',
-          codeBackgroundColor : '#f8fafc',
-          borderColor : '#e2e8f0',
-          blockQuoteColor : '#858585',
-          highlightColor : '#d22778',
-          sidebarSublink : '#b4b4b4',
-          codeTypeColor : '#091a28',
-          coverBackground : 'linear-gradient(to left bottom, hsl(236, 100%, 95%) 0%,hsl(236, 100%, 99%) 100%)',
-          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+          codeTextColor: '#0f172a',
+          codeBackgroundColor: '#f1f5f9',
+          borderColor: '#e2e8f0',
+          blockQuoteColor: '#64748b',
+          highlightColor: '#7c3aed',
+          sidebarSublink: '#64748b',
+          codeTypeColor: '#0f172a',
+          coverBackground: '#f8fafc',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
         }
       }
-    }
+    };
   </script>
-  <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  
-  <!-- Plugins -->
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  
-  <!-- Dark/Light Theme -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js" type="text/javascript"></script>
 
-  <!-- Prism Languages -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+
+  <script src="assets/portfolio.js"></script>
 </body>
 </html>
