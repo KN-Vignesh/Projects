@@ -1,68 +1,177 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
   <title>Vignesh K N — AI Engineer</title>
-  <meta name="description" content="AI Engineering portfolio of Vignesh K N — LLM adaptation, machine learning systems, evaluation and experiments.">
+
+<meta
+name="description"
+content="AI Engineering portfolio of Vignesh K N — LLM adaptation, machine learning systems, evaluation and experiments."
+
+>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <meta name="theme-color" content="#F0F1FA">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Docsify Base Theme -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+  >
+
+  <!-- Portfolio Styling -->
+
   <link rel="stylesheet" href="assets/portfolio.css">
+
 </head>
 
 <body>
+
+  <!-- Background Texture -->
+
   <div class="site-grain" aria-hidden="true"></div>
-  <div id="app">Loading portfolio…</div>
+
+  <!-- Docsify Application -->
+
+  <div id="app">
+    Loading portfolio…
+  </div>
 
   <script>
+
     window.$docsify = {
+
       name: "VIGNESH K N",
+
       repo: "KN-Vignesh/Projects",
-      relativePath: false,
-      auto2top: true,
-      executeScript: true,
-      loadSidebar: true,
-      loadNavbar: true,
-      mergeNavbar: true,
-      maxLevel: 3,
-      subMaxLevel: 0,
-      coverpage: true,
+
+      /*
+       * Navigation
+       *
+       * Explicitly reference the ROOT navigation files.
+       * This prevents Docsify from searching for
+       * _sidebar.md and _navbar.md inside project folders.
+       */
+
+      loadSidebar: "_sidebar.md",
+
+      loadNavbar: "_navbar.md",
+
+      mergeNavbar: false,
+
+
+      /*
+       * Routing / Content
+       */
+
       homepage: "README.md",
 
+      coverpage: true,
+
+      auto2top: true,
+
+      executeScript: true,
+
+
+      /*
+       * Documentation Structure
+       */
+
+      maxLevel: 3,
+
+      subMaxLevel: 0,
+
+
+      /*
+       * Search
+       */
+
       search: {
+
         maxAge: 86400000,
+
         paths: "auto",
+
         placeholder: "Search projects",
+
         noData: "No matching project",
+
         depth: 4,
+
         hideOtherSidebarContent: false
+
       },
 
+
+      /*
+       * Portfolio Enhancements
+       */
+
       plugins: [
+
         function (hook, vm) {
-          hook.afterEach(function (html) {
-            return html;
-          });
 
           hook.doneEach(function () {
-            const current = document.querySelector(".sidebar-toggle");
-            if (current) current.setAttribute("aria-label", "Toggle project navigation");
+
+            const toggle = document.querySelector(".sidebar-toggle");
+
+            if (toggle) {
+
+              toggle.setAttribute(
+                "aria-label",
+                "Toggle project navigation"
+              );
+
+            }
+
           });
+
         }
+
       ]
+
     };
+
   </script>
 
+  <!-- Docsify Core -->
+
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <!-- Docsify Search -->
+
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+  <!-- Copy Code -->
+
   <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+
+  <!-- Syntax Highlighting -->
+
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+
+  <!-- Portfolio JavaScript -->
+
   <script src="assets/portfolio.js"></script>
+
 </body>
 </html>
