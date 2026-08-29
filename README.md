@@ -1,47 +1,107 @@
-# AI Projects Portfolio
+<div class="vp-home">
 
-Welcome to the **AI Projects** portfolio! This space serves as a collection of artificial intelligence and machine learning projects, cookbooks, and fine-tuning guides designed to showcase various models, training techniques, and practical notebooks.
+<div class="vp-kicker">SELECTED WORK / 07 PROJECTS</div>
 
-## 🚀 Projects Overview
+# AI Engineering,<br>connected.
 
-Here you will find cookbooks and guides covering state-of-the-art models and training techniques:
+This portfolio is a growing collection of **AI systems, experiments and engineering foundations**. Each project can be understood on its own, while also connecting to a larger technical journey.
 
-- **LoRA Fine-tuning**: A guide and notebook demonstrating parameter-efficient fine-tuning using Low-Rank Adaptation (LoRA) on Qwen models.
-- **QLoRA Fine-tuning**: Step-by-step implementation of Quantized Low-Rank Adaptation (QLoRA) for memory-efficient LLM training.
-- **BERT_MODEL**: Notebook and notes demonstrating BERT-based workflows — pretraining/finetuning, tokenization, and typical evaluation metrics (classification/NER/etc.).
-- **CNN Fundamentals (Preprocessing)**: Walkthrough and examples for Convolutional Neural Network preprocessing, architecture basics, and example training for image tasks.
-- **Combined Metric Calculation**: Notebook and README showing how to compute combined evaluation metrics (e.g., weighted F1/accuracy/precision/recall aggregations) across experiments.
-- **Titanic Model**: Exploratory data analysis and predictive modeling using the classic Titanic dataset (located in Data-recipes).
-
-## 🛠️ Repository Structure
-
-```bash
-AI-Projects/
-├── Ai-Cookbook/
-│   ├── LoraFine-tuning/
-│   │   └── LORA_WITH_QWENN_MODEL.ipynb
-│   │   └── README.md
-│   ├── QLoraFine-Tuning/
-│   │   └── QLora_FineTuning.ipynb
-│   │   └── README.md
-│   ├── BERT_MODEL/
-│   │   └── README.md
-│   │   └── BERT_FineTuning.ipynb (example)
-│   ├── CNN-Fundamentals/
-│   │   └── README.md
-│   │   └── CNN_Preprocessing.ipynb (example)
-│   └── Combined_metric_Calc/
-│       └── README.md
-│       └── Combined_metric_Calc.ipynb
-├── Data-recipe/
-│   └── Titanic_Model/
-├── index.html
-└── README.md
-```
-
-## Contributing
-
-- If you add notebooks or scripts, please add a short README under the relevant folder describing: purpose, dependencies, how to run, expected outputs, and example usage.
-- Use virtual environments (venv/conda) and pin primary dependency versions where possible.
+<div class="vp-principle">
+  <span>01</span>
+  <div><b>SELF-SUFFICIENT</b><br>Every project explains its problem, approach, implementation and learning.</div>
+  <span>02</span>
+  <div><b>CONNECTED</b><br>Projects link through the technical ideas that connect them.</div>
+  <span>03</span>
+  <div><b>EVOLVING</b><br>New systems can extend the portfolio without breaking its structure.</div>
+</div>
 
 ---
+
+## AI SYSTEMS
+
+<a class="vp-project-card" href="#/Ai-Cookbook/LoraFine-tuning/README">
+  <span class="vp-number">01</span>
+  <div><small>LLM / PEFT</small><h3>QWEN<br>LoRA ADAPTATION</h3><p>Parameter-efficient adaptation of an open-weight language model.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+<a class="vp-project-card" href="#/Ai-Cookbook/QLoraFine-Tuning/README">
+  <span class="vp-number">02</span>
+  <div><small>LLM / QUANTIZATION</small><h3>QLoRA<br>EFFICIENT TRAINING</h3><p>Reducing memory requirements while adapting large language models.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+---
+
+## MODEL ENGINEERING
+
+<a class="vp-project-card" href="#/Ai-Cookbook/BERT_MODEL/README">
+  <span class="vp-number">03</span>
+  <div><small>TRANSFORMERS / NLP</small><h3>BERT<br>FINE-TUNING</h3><p>Transformer workflows for tokenization, downstream tasks and evaluation.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+<a class="vp-project-card" href="#/Ai-Cookbook/CNN-Fundamentals/README">
+  <span class="vp-number">04</span>
+  <div><small>VISION / DEEP LEARNING</small><h3>CNN<br>FUNDAMENTALS</h3><p>From image preprocessing to feature learning and classification.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+<a class="vp-project-card" href="#/Ai-Cookbook/Combined_metric_Calc/README">
+  <span class="vp-number">05</span>
+  <div><small>EVALUATION / EXPERIMENTS</small><h3>MODEL<br>EVALUATION</h3><p>Combining and interpreting metrics across multiple experiments.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+---
+
+## MACHINE LEARNING FOUNDATIONS
+
+<a class="vp-project-card" href="#/Data-recipe/House_Price_Prediction/README">
+  <span class="vp-number">06</span>
+  <div><small>TABULAR ML / REGRESSION</small><h3>HOUSE PRICE<br>PREDICTION</h3><p>A structured prediction workflow using TensorFlow Decision Forests.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+<a class="vp-project-card" href="#/Data-recipe/Titanic_Model/README">
+  <span class="vp-number">07</span>
+  <div><small>CLASSIFICATION / EDA</small><h3>TITANIC<br>ML BASELINE</h3><p>A foundational supervised learning workflow from exploration to prediction.</p></div>
+  <b>EXPLORE ↗</b>
+</a>
+
+---
+
+## THE ENGINEERING THREAD
+
+<div class="vp-thread">
+
+**LLM ADAPTATION**  
+LoRA → QLoRA → future model evaluation and serving
+
+↓
+
+**KNOWLEDGE SYSTEMS**  
+Future: Embeddings → RAG → Retrieval evaluation
+
+↓
+
+**INTELLIGENT AGENTS**  
+Future: Tool use → Agents → MCP → Agent evaluation
+
+↓
+
+**PRODUCTION AI**  
+Future: APIs → Serving → Observability → Reliable AI systems
+
+</div>
+
+> **The direction is intentional:** every future project should be independently understandable and technically connected to the systems around it.
+
+---
+
+### CURRENT FOCUS
+
+**AI Engineer / Generative AI Engineer / AI Software Engineer**
+
+Building toward end-to-end AI systems that combine model understanding, experimentation, evaluation and engineering.
+</div>

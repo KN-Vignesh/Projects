@@ -1,42 +1,61 @@
-# CNN Fundamentals & Preprocessing
+<div class="vp-project">
 
-## Description
+<div class="vp-project-header">
+<div class="vp-project-number">04 / 07</div>
+<div class="vp-project-category">MODEL ENGINEERING / COMPUTER VISION</div>
+</div>
 
-This folder provides examples and explanations on Convolutional Neural Network (CNN) fundamentals, image preprocessing steps, and a simple training example for image classification. Topics include data augmentation, normalization, basic CNN architectures, and model evaluation.
+# CNN FUNDAMENTALS
 
-## Requirements
+## From raw images to learned visual features and classification.
 
-- Python 3.8+
-- PyTorch
-- torchvision
-- albumentations (optional, for augmentations)
-- scikit-learn
-- matplotlib
+<div class="vp-tags"><span>VISION</span><span>PYTORCH</span><span>PREPROCESSING</span><span>CNN</span></div>
 
-Install via pip:
+<div class="vp-context">
+<div><small>ROLE IN PORTFOLIO</small><b>DEEP LEARNING FOUNDATION</b></div>
+<div><small>BUILDS ON</small><b>Machine learning foundations</b></div>
+<div><small>CONNECTS TO</small><b>Evaluation and future multimodal systems</b></div>
+</div>
 
-```bash
-pip install torch torchvision albumentations scikit-learn matplotlib
-```
+---
 
-## Execution & Usage
+## THE PROBLEM
 
-1. Prepare an image dataset arranged in folders or use a dataset loader (e.g., torchvision.datasets.ImageFolder).
-2. Open the notebook in this folder (if present):
+Image data needs consistent preprocessing before a model can learn useful representations. The challenge is to build a repeatable pipeline that transforms raw images into useful features and measurable predictions.
 
-```bash
-jupyter notebook CNN_Preprocessing.ipynb
-```
+## THE APPROACH
 
-3. Notebook covers:
-   - Loading and visualizing images
-   - Augmentation pipeline (resize, crop, flip, normalize)
-   - Building a small CNN and defining loss/optimizer
-   - Training loop and validation
-   - Saving model checkpoints and plotting metrics (loss/accuracy)
+The project combines image preparation with a convolutional neural network training workflow, including augmentation, normalization, model construction and validation.
 
-## Notes
+## THE SYSTEM
 
-- For larger datasets, consider using DataLoader with multiple workers.
-- Use normalization constants matching pretrained backbones if using transfer learning.
-- Adjust batch size and augmentations based on dataset and compute resources.
+**Image → preprocessing → augmentation → convolutional layers → learned features → classifier → metrics.**
+
+## IMPLEMENTATION
+
+The workflow covers loading and visualizing data, augmentation, normalization, CNN architecture basics, loss and optimizer configuration, training loops, validation and model checkpoints.
+
+## WHAT THIS PROJECT DEMONSTRATES
+
+**Data pipelines for deep learning, feature learning, training loops, validation and the relationship between preprocessing choices and model behavior.**
+
+---
+
+## PROJECT CONNECTIONS
+
+<div class="vp-connection-grid">
+<div><small>← RELATED FOUNDATION</small><b>Machine learning foundations</b><p>The technical context that helps explain this project.</p></div>
+<div><small>YOU ARE HERE</small><b>CNN FUNDAMENTALS</b><p>A self-contained experiment with its own complete technical story.</p></div>
+<div><small>NEXT CONNECTION →</small><b>Model Evaluation — turning training outcomes into comparable evidence</b><p>The next logical engineering direction in the portfolio.</p></div>
+</div>
+
+---
+
+## TECHNICAL RESOURCES
+
+- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/CNN-Fundamentals)
+- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
+
+> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
+
+</div>

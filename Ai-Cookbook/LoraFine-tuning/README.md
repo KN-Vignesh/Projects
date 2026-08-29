@@ -1,53 +1,63 @@
-# LoRA Fine-Tuning with Qwen Model
+<div class="vp-project">
 
-This project demonstrates parameter-efficient fine-tuning using Low-Rank Adaptation (LoRA) on the Qwen model family.
+<div class="vp-project-header">
+<div class="vp-project-number">01 / 07</div>
+<div class="vp-project-category">AI SYSTEMS / LLM ADAPTATION</div>
+</div>
 
-## 📝 Description
+# QWEN / LoRA ADAPTATION
 
-LoRA freezes the pre-trained model weights and injects trainable rank decomposition matrices into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. This cookbook provides a step-by-step guide to setting up and training a Qwen model using LoRA.
+## Teaching an open-weight language model a new task without retraining the entire model.
 
----
+<div class="vp-tags"><span>LLM</span><span>PEFT</span><span>QWEN</span><span>PYTORCH</span></div>
 
-## 🏗️ Architecture / Workflow
-
-```mermaid
-graph TD
-    A[Pre-trained Qwen Model Weights - Frozen] --> B[Transformer Attention Layer]
-    C[Input Features] --> B
-    C --> D[LoRA Adapter A & B - Trainable]
-    B --> E[Combined Output]
-    D --> E
-```
-
-1. **Initialize Pre-trained Model**: Load the base Qwen model in half-precision (FP16/BF16).
-2. **Apply LoRA Adapter**: Inject low-rank matrices (`r=8`, `alpha=16`) targeted at attention projection weights (`q_proj`, `v_proj`).
-3. **Supervised Fine-Tuning**: Train exclusively on adapter parameters using the target dataset.
-4. **Weights Merger**: (Optional) Merge LoRA weights back into the base model weights for production deployment.
+<div class="vp-context">
+<div><small>ROLE IN PORTFOLIO</small><b>LLM ADAPTATION FOUNDATION</b></div>
+<div><small>BUILDS ON</small><b>Transformer fine-tuning concepts</b></div>
+<div><small>CONNECTS TO</small><b>QLoRA and model evaluation</b></div>
+</div>
 
 ---
 
-## 📋 Requirements
+## THE PROBLEM
 
-Ensure the following dependencies are installed:
+Full fine-tuning updates a very large number of model parameters. That can require substantial compute, memory and storage. The engineering question is whether a model can be adapted while keeping most pretrained knowledge frozen.
 
-- Python 3.10+
-- PyTorch (with CUDA support)
-- Transformers
-- PEFT (Parameter-Efficient Fine-Tuning)
-- Accelerate
-- Datasets
+## THE APPROACH
 
-Install requirements via pip:
-```bash
-pip install torch transformers peft accelerate datasets
-```
+Low-Rank Adaptation (LoRA) freezes the base model and introduces a small number of trainable low-rank adapter parameters. Training focuses on those adapters rather than the complete parameter set.
+
+## THE SYSTEM
+
+**Base Qwen model → frozen pretrained weights → targeted LoRA adapters → supervised fine-tuning → adapted model output.**
+
+The workflow targets selected attention projections such as `q_proj` and `v_proj`, allowing the adaptation strategy to focus on a small trainable surface.
+
+## IMPLEMENTATION
+
+The implementation uses a Qwen-family model with PEFT-based LoRA configuration, reduced precision where appropriate, supervised fine-tuning and an optional adapter merge path for deployment-oriented workflows.
+
+## WHAT THIS PROJECT DEMONSTRATES
+
+**Parameter-efficient fine-tuning, Transformer adaptation, trainable versus frozen parameters, targeted modules and the trade-off between adaptation cost and flexibility.**
 
 ---
 
-## 🚀 Execution & Usage
+## PROJECT CONNECTIONS
 
-To execute the fine-tuning process, open the Jupyter Notebook and run all cells:
+<div class="vp-connection-grid">
+<div><small>← RELATED FOUNDATION</small><b>Transformer fine-tuning concepts</b><p>The technical context that helps explain this project.</p></div>
+<div><small>YOU ARE HERE</small><b>QWEN / LoRA ADAPTATION</b><p>A self-contained experiment with its own complete technical story.</p></div>
+<div><small>NEXT CONNECTION →</small><b>QLoRA — efficient training under tighter memory constraints</b><p>The next logical engineering direction in the portfolio.</p></div>
+</div>
 
-```bash
-jupyter notebook LORA_WITH_QWENN_MODEL.ipynb
-```
+---
+
+## TECHNICAL RESOURCES
+
+- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/LoraFine-tuning)
+- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
+
+> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
+
+</div>

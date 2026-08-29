@@ -1,41 +1,32 @@
-<div class="portfolio-cover">
-  <div class="cover-kicker">
-    <span class="status-dot"></span>
-    AI / DATA / ENGINEERING
+<section class="vp-hero">
+  <div class="vp-hero-top">
+    <span class="vp-dot"></span>
+    <span>AI / ENGINEERING / SYSTEMS</span>
   </div>
 
-  <div class="cover-copy">
-    <div class="cover-index">01 / PROJECTS</div>
+  <div class="vp-hero-copy">
+    <div class="vp-eyebrow">VIGNESH K N — AI ENGINEER</div>
+    <h1>I build<br><span>AI systems.</span></h1>
+    <p class="vp-lead">From model adaptation and machine learning foundations to the intelligent systems I am building next.</p>
 
-    <h1>AI Projects<br><span>Portfolio.</span></h1>
-
-    <p class="cover-lead">
-      A Premium Collection of Machine Learning Cookbooks &amp; AI Recipes
-    </p>
-
-    <div class="cover-meta">
-      <span>Parameter-Efficient Fine-Tuning (LoRA, QLoRA)</span>
-      <span>Deep Learning Fundamentals (CNN, BERT)</span>
-      <span>Data Science &amp; ML Workflows</span>
-    </div>
-
-    <div class="cover-actions">
-      <a class="cover-button cover-button-primary" href="README.md">Explore Projects <span>↗</span></a>
-      <a class="cover-button" href="https://github.com/KN-Vignesh/AI-Projects" target="_blank" rel="noopener">View on GitHub <span>↗</span></a>
+    <div class="vp-hero-actions">
+      <a href="#/README">EXPLORE WORK <b>↓</b></a>
+      <a class="vp-secondary" href="https://github.com/KN-Vignesh/Projects" target="_blank" rel="noopener">GITHUB ↗</a>
     </div>
   </div>
 
-  <div class="cover-visual" aria-hidden="true">
-    <div class="visual-label visual-label-top">SYSTEM / 01</div>
-    <div class="visual-label visual-label-bottom">STRUCTURE → DATA → RESULT</div>
-    <canvas id="hero-network"></canvas>
-    <div class="visual-orbit visual-orbit-one"></div>
-    <div class="visual-orbit visual-orbit-two"></div>
-    <div class="visual-core"></div>
+  <div class="vp-system" aria-hidden="true">
+    <div class="vp-system-label">SYSTEM MAP / 01</div>
+    <div class="vp-node n1">LLM</div>
+    <div class="vp-node n2">ML</div>
+    <div class="vp-node n3">EVAL</div>
+    <div class="vp-node n4">NEXT</div>
+    <div class="vp-line l1"></div>
+    <div class="vp-line l2"></div>
+    <div class="vp-line l3"></div>
+    <div class="vp-core"></div>
+    <div class="vp-system-bottom">PROBLEM → SYSTEM → EXPERIMENT → RESULT</div>
   </div>
 
-  <div class="cover-scroll">
-    <span>SCROLL TO EXPLORE</span>
-    <i></i>
-  </div>
-</div>
+  <div class="vp-scroll">SCROLL TO EXPLORE <i></i></div>
+</section>

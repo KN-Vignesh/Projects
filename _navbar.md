@@ -1,5 +1,3 @@
-- [<span class="nav-brand">VK<span>.</span></span>](#/)
-
-- [Projects](README.md)
-
-- [GitHub ↗](https://github.com/KN-Vignesh/AI-Projects)
+- [<span class="vp-brand">VK<span>.</span></span>](#/)
+- [WORK](#/README)
+- [GITHUB ↗](https://github.com/KN-Vignesh/Projects)

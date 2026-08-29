@@ -2,108 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Vignesh — AI, Data & Engineering</title>
-  <meta name="description" content="Vignesh's AI, data science and engineering portfolio.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Vignesh K N — AI Engineer</title>
+  <meta name="description" content="AI Engineering portfolio of Vignesh K N — LLM adaptation, machine learning systems, evaluation and experiments.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F0F1FA">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css" title="docsify-darklight-theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="assets/portfolio.css">
 </head>
 
 <body>
-  <div class="site-noise" aria-hidden="true"></div>
-  <div id="app">Loading...</div>
+  <div class="site-grain" aria-hidden="true"></div>
+  <div id="app">Loading portfolio…</div>
 
   <script>
     window.$docsify = {
-      name: 'VIGNESH',
-      repo: 'KN-Vignesh/Projects',
-
-      /*
-       * Important for GitHub Pages:
-       * Keep Docsify route resolution independent from the current
-       * nested hash route. Sidebar links below use explicit #/ routes.
-       */
+      name: "VIGNESH K N",
+      repo: "KN-Vignesh/Projects",
       relativePath: false,
       auto2top: true,
       executeScript: true,
       loadSidebar: true,
       loadNavbar: true,
       mergeNavbar: true,
-      maxLevel: 4,
-      subMaxLevel: 2,
+      maxLevel: 3,
+      subMaxLevel: 0,
       coverpage: true,
+      homepage: "README.md",
 
       search: {
         maxAge: 86400000,
-        paths: 'auto',
-        placeholder: 'Search projects...',
-        noData: 'No results',
-        depth: 6,
+        paths: "auto",
+        placeholder: "Search projects",
+        noData: "No matching project",
+        depth: 4,
         hideOtherSidebarContent: false
       },
 
-      pagination: {
-        previousText: 'Previous',
-        nextText: 'Next',
-        crossChapter: true,
-        crossChapterText: true
-      },
+      plugins: [
+        function (hook, vm) {
+          hook.afterEach(function (html) {
+            return html;
+          });
 
-      darklightTheme: {
-        siteFont: 'Inter, sans-serif',
-        defaultTheme: 'dark',
-        codeFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-        bodyFontSize: '16px',
-
-        dark: {
-          accent: '#67e8f9',
-          toogleBackground: '#ffffff',
-          background: '#050505',
-          textColor: '#e5e7eb',
-          codeTextColor: '#ffffff',
-          codeBackgroundColor: '#0d1117',
-          borderColor: 'rgba(255,255,255,.1)',
-          blockQuoteColor: '#94a3b8',
-          highlightColor: '#a78bfa',
-          sidebarSublink: '#94a3b8',
-          codeTypeColor: '#ffffff',
-          coverBackground: '#050505',
-          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
-        },
-
-        light: {
-          accent: '#0891b2',
-          toogleBackground: '#0f172a',
-          background: '#f8fafc',
-          textColor: '#334155',
-          codeTextColor: '#0f172a',
-          codeBackgroundColor: '#f1f5f9',
-          borderColor: '#e2e8f0',
-          blockQuoteColor: '#64748b',
-          highlightColor: '#7c3aed',
-          sidebarSublink: '#64748b',
-          codeTypeColor: '#0f172a',
-          coverBackground: '#f8fafc',
-          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+          hook.doneEach(function () {
+            const current = document.querySelector(".sidebar-toggle");
+            if (current) current.setAttribute("aria-label", "Toggle project navigation");
+          });
         }
-      }
+      ]
     };
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
-
   <script src="assets/portfolio.js"></script>
 </body>
 </html>

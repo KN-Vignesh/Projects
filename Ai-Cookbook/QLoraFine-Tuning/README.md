@@ -1,56 +1,63 @@
-# QLoRA Fine-Tuning
+<div class="vp-project">
 
-This project implements Quantized Low-Rank Adaptation (QLoRA) to fine-tune Large Language Models efficiently on consumer-grade hardware.
+<div class="vp-project-header">
+<div class="vp-project-number">02 / 07</div>
+<div class="vp-project-category">AI SYSTEMS / EFFICIENT TRAINING</div>
+</div>
 
-## 📝 Description
+# QLoRA
 
-QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low-Rank Adapters (LoRA). It introduces innovations like NF4 (NormalFloat 4) data type, Double Quantization, and Paged Optimizers to save memory without sacrificing performance.
+## Making large-language-model adaptation more practical when memory is constrained.
 
----
+<div class="vp-tags"><span>LLM</span><span>4-BIT</span><span>NF4</span><span>PEFT</span></div>
 
-## 🏗️ Architecture / Workflow
-
-```mermaid
-graph TD
-    A[Base LLM Weights Quantized to 4-bit NF4] --> B[Double Quantization to save scaling factor memory]
-    C[Input Features] --> A
-    C --> D[Active 16-bit LoRA Adapters - Trainable]
-    A --> E[De-quantized Activations]
-    D --> F[LoRA Output]
-    E --> G[Combined Output]
-    F --> G
-```
-
-1. **Quantized Load**: Load the base model in 4-bit NormalFloat (NF4) with Double Quantization enabled.
-2. **Setup PEFT Config**: Define the LoRA parameters (target modules, rank, dropout) mapping to the quantized model.
-3. **Paged Optimizers**: Configure page-to-page memory transfers to handle memory spikes gracefully during backpropagation.
-4. **Fine-Tuning**: Execute training on the target task dataset.
+<div class="vp-context">
+<div><small>ROLE IN PORTFOLIO</small><b>MEMORY-EFFICIENT LLM ADAPTATION</b></div>
+<div><small>BUILDS ON</small><b>LoRA / parameter-efficient adaptation</b></div>
+<div><small>CONNECTS TO</small><b>Evaluation and future model serving</b></div>
+</div>
 
 ---
 
-## 📋 Requirements
+## THE PROBLEM
 
-Ensure the following dependencies are installed:
+Even when only LoRA adapters are trainable, loading a large base model can still create significant memory pressure. The challenge is to reduce the memory footprint of the base model while preserving a useful adaptation workflow.
 
-- Python 3.10+
-- PyTorch (with CUDA support)
-- Transformers
-- PEFT
-- BitsAndBytes (for 4-bit quantization)
-- Accelerate
-- Datasets
+## THE APPROACH
 
-Install requirements via pip:
-```bash
-pip install torch transformers peft bitsandbytes accelerate datasets
-```
+QLoRA combines low-bit quantization of the frozen base model with trainable LoRA adapters. The base model remains memory-efficient while the adapters provide the trainable path for the downstream task.
+
+## THE SYSTEM
+
+**Base LLM → 4-bit quantization → frozen quantized weights → trainable LoRA adapters → fine-tuning → evaluation.**
+
+The project explores NF4 quantization, double quantization and the broader memory-management ideas associated with efficient fine-tuning.
+
+## IMPLEMENTATION
+
+The implementation uses a quantized model-loading workflow together with PEFT configuration, BitsAndBytes support, LoRA target modules and a training pipeline designed for constrained hardware environments.
+
+## WHAT THIS PROJECT DEMONSTRATES
+
+**Quantization-aware engineering, memory-efficient training, PEFT configuration, the difference between LoRA and QLoRA, and compute-versus-memory trade-offs.**
 
 ---
 
-## 🚀 Execution & Usage
+## PROJECT CONNECTIONS
 
-To execute the fine-tuning process, open the Jupyter Notebook and run all cells:
+<div class="vp-connection-grid">
+<div><small>← RELATED FOUNDATION</small><b>LoRA / parameter-efficient adaptation</b><p>The technical context that helps explain this project.</p></div>
+<div><small>YOU ARE HERE</small><b>QLoRA</b><p>A self-contained experiment with its own complete technical story.</p></div>
+<div><small>NEXT CONNECTION →</small><b>LLM Evaluation — measuring whether efficiency preserves useful performance</b><p>The next logical engineering direction in the portfolio.</p></div>
+</div>
 
-```bash
-jupyter notebook QLora_FineTuning.ipynb
-```
+---
+
+## TECHNICAL RESOURCES
+
+- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/QLoraFine-Tuning)
+- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
+
+> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
+
+</div>
