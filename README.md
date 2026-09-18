@@ -1,113 +1,164 @@
-<div class="vp-home">
+# VIGNESH K N
 
-<div class="vp-kicker">SELECTED WORK / 08 PROJECTS</div>
+> **SOFTWARE ENGINEER BUILDING AI SYSTEMS.**  
+> Extending software engineering foundations into machine learning, generative AI and production-oriented applications.
 
-# AI Engineering,<br>connected.
+`FIG_000 · AI ENGINEERING PORTFOLIO · 2026`
 
-This portfolio is a growing collection of **AI systems, experiments and engineering foundations**. Each project can be understood on its own, while also connecting to a larger technical journey.
+| LOCATION | FOCUS | BACKGROUND | CURRENT BUILD |
+| --- | --- | --- | --- |
+| INDIA | AI ENGINEERING | SOFTWARE ENGINEERING | GENERATIVE AI |
 
-<div class="vp-principle">
-  <span>01</span>
-  <div><b>SELF-SUFFICIENT</b><br>Every project explains its problem, approach, implementation and learning.</div>
-  <span>02</span>
-  <div><b>CONNECTED</b><br>Projects link through the technical ideas that connect them.</div>
-  <span>03</span>
-  <div><b>EVOLVING</b><br>New systems can extend the portfolio without breaking its structure.</div>
-</div>
+[VIEW PROJECTS](#/?id=project-system) · [GITHUB](https://github.com/KN-Vignesh/Projects) · [LINKEDIN](https://www.linkedin.com/in/vignesh-k-n/)
 
 ---
 
-## AI SYSTEMS
+## 01 — ENGINEERING SYSTEM
 
-<a class="vp-project-card" href="#/Ai-Cookbook/LoraFine-tuning/README">
-  <span class="vp-number">01</span>
-  <div><small>LLM / PEFT</small><h3>QWEN<br>LoRA ADAPTATION</h3><p>Parameter-efficient adaptation of an open-weight language model.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
+### FROM SOFTWARE ENGINEERING → AI ENGINEERING
 
-<a class="vp-project-card" href="#/Ai-Cookbook/QLoraFine-Tuning/README">
-  <span class="vp-number">02</span>
-  <div><small>LLM / QUANTIZATION</small><h3>QLoRA<br>EFFICIENT TRAINING</h3><p>Reducing memory requirements while adapting large language models.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
+```text
+DATA
+  │
+  ▼
+MODEL
+  │
+  ▼
+APPLICATION
+  │
+  ▼
+EVALUATION
+  │
+  ▼
+DEPLOYMENT
+```
 
-<div class="vp-project-card">
-  <span class="vp-number">03</span>
-  <div><small>AI SYSTEMS / CODE REVIEW</small><h3>VERO<br>AI CODE ANALYSIS</h3><p>Evidence-based pull request analysis combining deterministic static signals with structured AI decisions.</p></div>
-  <span><b>DOCS ↗</b><br><b><a href="/vero/">LAUNCH ↗</a></b></span>
-</div>
+The portfolio follows the same loop used to build useful AI systems: understand the problem, build the smallest workable system, evaluate it, and move it toward production.
 
----
+### THE BUILD LOOP
 
-## MODEL ENGINEERING
-
-<a class="vp-project-card" href="#/Ai-Cookbook/BERT_MODEL/README">
-  <span class="vp-number">04</span>
-  <div><small>TRANSFORMERS / NLP</small><h3>BERT<br>FINE-TUNING</h3><p>Transformer workflows for tokenization, downstream tasks and evaluation.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
-
-<a class="vp-project-card" href="#/Ai-Cookbook/CNN-Fundamentals/README">
-  <span class="vp-number">05</span>
-  <div><small>VISION / DEEP LEARNING</small><h3>CNN<br>FUNDAMENTALS</h3><p>From image preprocessing to feature learning and classification.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
-
-<a class="vp-project-card" href="#/Ai-Cookbook/Combined_metric_Calc/README">
-  <span class="vp-number">06</span>
-  <div><small>EVALUATION / EXPERIMENTS</small><h3>MODEL<br>EVALUATION</h3><p>Combining and interpreting metrics across multiple experiments.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
+| STEP | PRINCIPLE | OUTPUT |
+| --- | --- | --- |
+| 01 | UNDERSTAND | Problem definition + constraints |
+| 02 | BUILD | Working implementation |
+| 03 | EVALUATE | Evidence, metrics, failure modes |
+| 04 | SHIP | API, application or deployment path |
+| 05 | ITERATE | Engineering decisions + next experiment |
 
 ---
 
-## MACHINE LEARNING FOUNDATIONS
+## 02 — PROJECT SYSTEM
 
-<a class="vp-project-card" href="#/Data-recipe/House_Price_Prediction/README">
-  <span class="vp-number">07</span>
-  <div><small>TABULAR ML / REGRESSION</small><h3>HOUSE PRICE<br>PREDICTION</h3><p>A structured prediction workflow using TensorFlow Decision Forests.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
+A growing archive of machine learning, model engineering and AI application work. Each project remains independently understandable while fitting into a larger engineering progression.
 
-<a class="vp-project-card" href="#/Data-recipe/Titanic_Model/README">
-  <span class="vp-number">08</span>
-  <div><small>CLASSIFICATION / EDA</small><h3>TITANIC<br>ML BASELINE</h3><p>A foundational supervised learning workflow from exploration to prediction.</p></div>
-  <b>EXPLORE ↗</b>
-</a>
+### 01 · INTELLIGENT CUSTOMER CHURN PREDICTION
+
+**TRADITIONAL ML · PRODUCTION API**  
+Predict customer churn through a reproducible preprocessing and classification pipeline, with a FastAPI interface and deployment path.
+
+`Python` `Scikit-learn` `FastAPI` `Docker`
+
+[OPEN PROJECT →](#/projects/customer-churn)
+
+### 02 · QWEN / LoRA ADAPTATION
+
+**LLM · PEFT · MODEL ENGINEERING**  
+Parameter-efficient adaptation of an open-weight language model using targeted LoRA adapters.
+
+`Qwen` `LoRA` `PEFT` `PyTorch`
+
+[OPEN PROJECT →](#/Ai-Cookbook/LoraFine-tuning/README)
+
+### 03 · QLoRA EFFICIENT TRAINING
+
+**LLM · QUANTIZATION · PEFT**  
+Memory-efficient model adaptation using low-bit quantization and trainable LoRA adapters.
+
+`4-bit` `NF4` `BitsAndBytes` `PEFT`
+
+[OPEN PROJECT →](#/Ai-Cookbook/QLoraFine-Tuning/README)
+
+### 04 · BERT MODEL ENGINEERING
+
+**TRANSFORMERS · NLP**  
+Downstream Transformer workflows covering tokenization, adaptation and evaluation.
+
+`BERT` `Transformers` `NLP` `Classification`
+
+[OPEN PROJECT →](#/Ai-Cookbook/BERT_MODEL/README)
+
+### 05 · VERO — AI CODE ANALYSIS
+
+**AI APPLICATION · CODE INTELLIGENCE**  
+Evidence-based pull-request analysis combining deterministic checks, structured AI signals and explicit decision rules.
+
+`GitHub` `Static Analysis` `TypeSafe Jev` `Policy`
+
+[OPEN PROJECT →](#/docs/VERO/README)
+
+### MORE WORK
+
+House Price Prediction · CNN Fundamentals · Model Evaluation · Titanic ML Baseline
+
+[OPEN PROJECT INDEX →](#/README?id=project-system)
 
 ---
 
-## THE ENGINEERING THREAD
+## 03 — AI ENGINEERING STACK
 
-<div class="vp-thread">
-
-**LLM ADAPTATION**  
-LoRA → QLoRA → future model evaluation and serving
-
-↓
-
-**KNOWLEDGE SYSTEMS**  
-Future: Embeddings → RAG → Retrieval evaluation
-
-↓
-
-**INTELLIGENT AGENTS**  
-Future: Tool use → Agents → MCP → Agent evaluation
-
-↓
-
-**PRODUCTION AI**  
-Future: APIs → Serving → Observability → Reliable AI systems
-
-</div>
-
-> **The direction is intentional:** every future project should be independently understandable and technically connected to the systems around it.
+| LAYER | TOOLS / CONCEPTS |
+| --- | --- |
+| FOUNDATIONS | Python · SQL · Git · Linux |
+| MACHINE LEARNING | NumPy · Pandas · Scikit-learn · PyCaret |
+| DEEP LEARNING | PyTorch · TensorFlow · Transformers |
+| GENERATIVE AI | LLMs · Embeddings · RAG · Fine-tuning · LoRA / PEFT |
+| AI APPLICATIONS | FastAPI · REST APIs · React · Docker |
+| ENGINEERING | Testing · CI/CD · Cloud · Evaluation · Observability |
 
 ---
 
-### CURRENT FOCUS
+## 04 — LEARNING SYSTEM
 
-**AI Engineer / Generative AI Engineer / AI Software Engineer**
+The learning section records direction rather than claiming arbitrary completion percentages.
 
-Building toward end-to-end AI systems that combine model understanding, experimentation, evaluation and engineering.
-</div>
+| DOMAIN | STATE |
+| --- | --- |
+| TRADITIONAL ML | FOUNDATION |
+| DEEP LEARNING | BUILDING |
+| GENERATIVE AI | BUILDING |
+| AI APPLICATIONS | BUILDING |
+| AGENT ENGINEERING | EXPLORING |
+| PRODUCTION AI | BUILDING |
+
+### CAREER THREAD
+
+```text
+SOFTWARE ENGINEERING
+        ↓
+SYSTEM DESIGN
+        ↓
+MACHINE LEARNING
+        ↓
+GENERATIVE AI
+        ↓
+AI APPLICATION ENGINEERING
+        ↓
+PRODUCTION AI
+```
+
+The direction is an extension of existing engineering experience—not a restart. The focus is on building systems that combine software discipline with model understanding, evaluation and deployment.
+
+---
+
+## 05 — CONTACT
+
+### LET'S BUILD
+
+Interested in AI engineering, GenAI applications or production-oriented AI systems?
+
+[LINKEDIN →](https://www.linkedin.com/in/vignesh-k-n/)  
+[GITHUB →](https://github.com/KN-Vignesh/Projects)
+
+---
+
+`VIGNESH K N · AI ENGINEERING PORTFOLIO · HTML · CSS · JAVASCRIPT · MARKDOWN`
