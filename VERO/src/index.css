@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+	--vero-bg: #f0f1fa;
+	--vero-paper: #ffffff;
+	--vero-ink: #090a0f;
+	--vero-muted: #626774;
+	--vero-line: #d8dae5;
+	--vero-blue: #1a2ffb;
+	--vero-blue-soft: #e5e8ff;
+}
+
+html,
+body,
+#root {
+	min-width: 320px;
+	min-height: 100%;
+}
+
+body {
+	background: var(--vero-bg);
+	color: var(--vero-ink);
+	font-family: Inter, sans-serif;
+}
+
+.vero-shell {
+	background:
+		linear-gradient(135deg, rgba(255, 255, 255, 0.65), transparent 38%),
+		var(--vero-bg) !important;
+}
+
+.vero-shell header {
+	border-color: var(--vero-line) !important;
+	background: rgba(240, 241, 250, 0.88) !important;
+	box-shadow: 0 1px 0 rgba(9, 10, 15, 0.03);
+}
+
+.vero-shell header button,
+.vero-shell header a {
+	border-radius: 0.25rem;
+}
+
+.vero-shell header button[aria-current='true'],
+.vero-shell header button:hover,
+.vero-shell header a:hover {
+	color: var(--vero-blue) !important;
+}
+
+.vero-shell main {
+	max-width: 1180px;
+}
+
+.vero-shell main > div > div {
+	border-color: var(--vero-line);
+}
+
+.vero-shell h1,
+.vero-shell h2,
+.vero-shell h3 {
+	font-family: 'Space Grotesk', sans-serif;
+	letter-spacing: -0.035em;
+}
+
+.vero-shell input:focus {
+	border-color: var(--vero-blue) !important;
+	box-shadow: 0 0 0 1px var(--vero-blue) !important;
+}
+
+.vero-shell button.bg-zinc-900,
+.vero-shell button.dark\:bg-zinc-100 {
+	background: var(--vero-blue) !important;
+}
+
+.vero-shell button.bg-zinc-900:hover,
+.vero-shell button.dark\:bg-zinc-100:hover {
+	background: #1020c7 !important;
+}
+
+@media (max-width: 768px) {
+	.vero-shell header {
+		position: relative;
+	}
+}

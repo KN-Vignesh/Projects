@@ -3,6 +3,7 @@
 - <span class="sidebar-label">AI SYSTEMS</span>
   - [01 — LoRA / Qwen](Ai-Cookbook/LoraFine-tuning/README.md)
   - [02 — QLoRA](Ai-Cookbook/QLoraFine-Tuning/README.md)
+  - [03 — VERO](docs/VERO/README.md)
 
 - <span class="sidebar-label">MODEL ENGINEERING</span>
   - [03 — BERT](Ai-Cookbook/BERT_MODEL/README.md)

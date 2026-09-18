@@ -1,23 +1,23 @@
 /* Vignesh K N Portfolio — Lusion-inspired AI Engineering system */
 :root{
-  --bg:#F0F1FA;
+  --bg:#FAFAFA;
   --paper:#FFFFFF;
-  --ink:#090A0F;
-  --muted:#626774;
-  --line:#D8DAE5;
-  --blue:#1A2FFB;
-  --blue-soft:#E5E8FF;
+  --ink:#18181B;
+  --muted:#71717A;
+  --line:#E4E4E7;
+  --blue:#18181B;
+  --blue-soft:#F4F4F5;
   --max:1180px;
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)!important;color:var(--ink)!important}
 body{font-family:Inter,Arial,sans-serif;overflow-x:hidden}
 .site-grain{position:fixed;inset:0;pointer-events:none;opacity:.025;z-index:99;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.app-nav{position:fixed!important;top:18px;right:28px;z-index:80;margin:0!important;padding:6px!important;background:rgba(240,241,250,.82);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:999px}
+.app-nav{position:fixed!important;top:18px;right:28px;z-index:80;margin:0!important;padding:6px!important;background:rgba(250,250,250,.88);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:999px}
 .app-nav ul{display:flex;gap:3px;align-items:center}.app-nav li{margin:0!important}
 .app-nav a{display:block;padding:9px 13px!important;color:var(--ink)!important;font-size:11px!important;font-weight:700;letter-spacing:.08em;border-radius:999px}.app-nav a:hover{background:var(--ink);color:#fff!important}
 .vp-brand{font-family:"Space Grotesk";font-size:14px}.vp-brand span{color:var(--blue)}
-.sidebar{background:rgba(240,241,250,.92)!important;border-right:1px solid var(--line)!important;backdrop-filter:blur(18px)}
+.sidebar{background:rgba(250,250,250,.94)!important;border-right:1px solid var(--line)!important;backdrop-filter:blur(18px)}
 .sidebar-nav{padding:92px 16px 32px!important}.sidebar-nav a{color:#4B5160!important;border-radius:8px;font-size:13px}.sidebar-nav a:hover,.sidebar-nav .active>a{color:var(--blue)!important;background:var(--blue-soft)!important}
 .sidebar-label{display:block;margin:24px 10px 8px;color:#8A90A0;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.12em}
 .sidebar-toggle{background:var(--blue)!important}
@@ -28,7 +28,7 @@ body{font-family:Inter,Arial,sans-serif;overflow-x:hidden}
 .vp-hero h1{margin:0;font-family:"Space Grotesk";font-size:clamp(70px,10vw,150px)!important;line-height:.82!important;letter-spacing:-.085em!important;color:var(--ink)!important}.vp-hero h1 span{color:var(--blue)}
 .vp-lead{max-width:570px;margin:36px 0 0!important;color:var(--muted)!important;font-size:18px!important;line-height:1.65!important}
 .vp-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}.vp-hero-actions a{padding:14px 18px;background:var(--blue);color:#fff!important;border:1px solid var(--blue);font-size:11px;font-weight:800;letter-spacing:.08em}.vp-hero-actions .vp-secondary{background:transparent;color:var(--ink)!important}
-.vp-system{position:relative;width:min(100%,540px);aspect-ratio:1;justify-self:center;border:1px solid var(--line);background:radial-gradient(circle at center,#fff 0%,#E7E9F3 42%,transparent 70%);overflow:hidden}
+.vp-system{position:relative;width:min(100%,540px);aspect-ratio:1;justify-self:center;border:1px solid var(--line);background:radial-gradient(circle at center,#fff 0%,#F4F4F5 42%,transparent 70%);overflow:hidden}
 .vp-system:before,.vp-system:after{content:"";position:absolute;inset:12%;border:1px solid rgba(26,47,251,.14);border-radius:50%;transform:rotate(35deg)}.vp-system:after{inset:27%;transform:rotate(-20deg)}
 .vp-system-label,.vp-system-bottom{position:absolute;font:10px "DM Mono";letter-spacing:.09em;color:#737989}.vp-system-label{top:24px;left:24px}.vp-system-bottom{bottom:24px;left:24px}
 .vp-node{position:absolute;padding:8px 10px;background:#fff;border:1px solid var(--line);font:10px "DM Mono";letter-spacing:.08em}.n1{top:18%;left:14%}.n2{top:28%;right:11%}.n3{bottom:24%;left:18%}.n4{bottom:16%;right:15%;color:var(--blue);border-color:var(--blue)}

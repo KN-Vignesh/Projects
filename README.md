@@ -1,6 +1,6 @@
 <div class="vp-home">
 
-<div class="vp-kicker">SELECTED WORK / 07 PROJECTS</div>
+<div class="vp-kicker">SELECTED WORK / 08 PROJECTS</div>
 
 # AI Engineering,<br>connected.
 
@@ -31,24 +31,30 @@ This portfolio is a growing collection of **AI systems, experiments and engineer
   <b>EXPLORE ↗</b>
 </a>
 
+<div class="vp-project-card">
+  <span class="vp-number">03</span>
+  <div><small>AI SYSTEMS / CODE REVIEW</small><h3>VERO<br>AI CODE ANALYSIS</h3><p>Evidence-based pull request analysis combining deterministic static signals with structured AI decisions.</p></div>
+  <span><b>DOCS ↗</b><br><b><a href="/vero/">LAUNCH ↗</a></b></span>
+</div>
+
 ---
 
 ## MODEL ENGINEERING
 
 <a class="vp-project-card" href="#/Ai-Cookbook/BERT_MODEL/README">
-  <span class="vp-number">03</span>
+  <span class="vp-number">04</span>
   <div><small>TRANSFORMERS / NLP</small><h3>BERT<br>FINE-TUNING</h3><p>Transformer workflows for tokenization, downstream tasks and evaluation.</p></div>
   <b>EXPLORE ↗</b>
 </a>
 
 <a class="vp-project-card" href="#/Ai-Cookbook/CNN-Fundamentals/README">
-  <span class="vp-number">04</span>
+  <span class="vp-number">05</span>
   <div><small>VISION / DEEP LEARNING</small><h3>CNN<br>FUNDAMENTALS</h3><p>From image preprocessing to feature learning and classification.</p></div>
   <b>EXPLORE ↗</b>
 </a>
 
 <a class="vp-project-card" href="#/Ai-Cookbook/Combined_metric_Calc/README">
-  <span class="vp-number">05</span>
+  <span class="vp-number">06</span>
   <div><small>EVALUATION / EXPERIMENTS</small><h3>MODEL<br>EVALUATION</h3><p>Combining and interpreting metrics across multiple experiments.</p></div>
   <b>EXPLORE ↗</b>
 </a>
@@ -58,13 +64,13 @@ This portfolio is a growing collection of **AI systems, experiments and engineer
 ## MACHINE LEARNING FOUNDATIONS
 
 <a class="vp-project-card" href="#/Data-recipe/House_Price_Prediction/README">
-  <span class="vp-number">06</span>
+  <span class="vp-number">07</span>
   <div><small>TABULAR ML / REGRESSION</small><h3>HOUSE PRICE<br>PREDICTION</h3><p>A structured prediction workflow using TensorFlow Decision Forests.</p></div>
   <b>EXPLORE ↗</b>
 </a>
 
 <a class="vp-project-card" href="#/Data-recipe/Titanic_Model/README">
-  <span class="vp-number">07</span>
+  <span class="vp-number">08</span>
   <div><small>CLASSIFICATION / EDA</small><h3>TITANIC<br>ML BASELINE</h3><p>A foundational supervised learning workflow from exploration to prediction.</p></div>
   <b>EXPLORE ↗</b>
 </a>

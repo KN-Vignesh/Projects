@@ -6,7 +6,7 @@
       if (card.dataset.ready) return;
       card.dataset.ready = "true";
       card.addEventListener("mouseenter", () => {
-        card.style.borderLeft = "3px solid #1A2FFB";
+        card.style.borderLeft = "3px solid #18181B";
       });
       card.addEventListener("mouseleave", () => {
         card.style.borderLeft = "";
