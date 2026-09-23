@@ -8,7 +8,7 @@ Run the production process with:
 NODE_ENV=production npm start
 ```
 
-The server exposes the portfolio at `/`, VERO at `/vero/`, and the API at `/api/*`. The Vite base path is `/vero/`, so asset URLs and direct navigation remain correct after deployment.
+The server exposes the VERO application at `/vero/` and the API at `/api/*`. The Vite base path is `/vero/`, so asset URLs and direct navigation remain correct after deployment. This repository remains a project/code repository rather than a hosted portfolio front end.
 
 ## Environment variables
 

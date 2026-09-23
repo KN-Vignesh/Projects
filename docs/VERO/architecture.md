@@ -1,18 +1,16 @@
 # Architecture
 
-VERO is a small React/Vite client served by an Express process. The same process exposes the analysis API and serves the portfolio at the repository root.
+VERO is a small React/Vite client served by an Express process. The same process exposes the analysis API and hosts the application under the repository's VERO workspace.
 
 ```text
 Browser
-  ├── /                 Docsify portfolio and documentation
-  └── /vero/            VERO React application
-                          │
-                          └── /api/*
-                              Express API
-                              ├── GitHub ingestion
-                              ├── deterministic static analysis
-                              ├── TypeSafe Jev inference
-                              └── decision engine
+  ├── /vero/            VERO React application
+  │
+  └── /api/*            Express API
+                        ├── GitHub ingestion
+                        ├── deterministic static analysis
+                        ├── TypeSafe Jev inference
+                        └── decision engine
 ```
 
 The client keeps browser history and user-provided keys in local storage. The server keeps the anonymous trial session in memory and never requires those keys to be committed to the repository.
