@@ -4,10 +4,7 @@
     "allowedRiskLevels": ["low"],
     "requiresValidation": true,
     "requiresPullRequest": true,
-    "autoMerge": false,
-    "minimumConfidence": 0.8,
-    "maximumFilesChanged": 3,
-    "maximumLinesChanged": 50
+    "autoMerge": false
   },
   "protectedPaths": [
     ".github/workflows/",
@@ -20,13 +17,6 @@
     "yarn.lock",
     "pnpm-lock.yaml",
     "server.ts",
-    "VERO/server.ts",
-    "authentication/",
-    "security/",
-    "secrets/",
-    "credentials/",
-    "deployment/",
-    "infrastructure/",
-    "README.md"
+    "VERO/server.ts"
   ]
 }

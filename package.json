@@ -18,10 +18,8 @@
     "guardian:report": "tsx scripts/guardian/generate-report.ts",
     "guardian:issues": "tsx scripts/guardian/create-issues.ts",
     "guardian:diagnose": "tsx scripts/guardian/diagnose-failure.ts",
-    "guardian:diagnose-issues": "tsx scripts/guardian/diagnose-issues.ts",
     "guardian:evidence": "tsx scripts/guardian/collect-evidence.ts",
     "guardian:dry-run": "tsx scripts/guardian/dry-run.ts",
-    "guardian:repair:dry-run": "npm run guardian:dry-run",
     "guardian:test": "tsx --test tests/guardian/*.test.ts",
     "guardian:check": "npm run guardian:links && npm run guardian:repo && npm run guardian:report"
   },

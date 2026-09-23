@@ -132,11 +132,3 @@ export async function upsertGuardianIssue(input: GuardianIssueInput): Promise<{ 
   });
   return { number: created.number, url: created.html_url, created: true };
 }
-
-export async function commentOnIssue(repository: string, token: string, issueNumber: number, body: string): Promise<void> {
-  await githubRequest(repository, token, `/issues/${issueNumber}/comments`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ body }),
-  });
-}

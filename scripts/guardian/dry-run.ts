@@ -19,7 +19,7 @@ await writeFile('guardian-evidence/manifest.json', `${JSON.stringify({
 await writeFile('guardian-issue-preview.md', artifacts.issuePreview);
 await writeFile('guardian-ai-diagnosis.json', `${JSON.stringify(artifacts.diagnosis, null, 2)}\n`);
 await writeFile('guardian-ai-diagnosis.md', `# Guardian AI Diagnosis\n\nStatus: DRY RUN - NO AI SOURCE MODIFICATION\n\n${artifacts.diagnosis.rootCause}\n`);
-await writeFile('guardian-repair-plan.json', `${JSON.stringify({ status: 'REPAIR NOT APPLIED - DRY RUN', policy: artifacts.policy, validation: artifacts.repairValidation, execution: artifacts.repairExecution, repairPlan: artifacts.repairPlan }, null, 2)}\n`);
+await writeFile('guardian-repair-plan.json', `${JSON.stringify({ status: 'REPAIR NOT APPLIED - DRY RUN', policy: artifacts.policy, validation: artifacts.repairValidation, repairPlan: artifacts.repairPlan }, null, 2)}\n`);
 await writeFile('guardian-repair-plan.md', `# Guardian Repair Plan\n\nREPAIR NOT APPLIED - DRY RUN\n\n${artifacts.diagnosis.proposedFix}\n`);
 await writeFile('guardian-branch-preview.json', `${JSON.stringify(artifacts.branchPreview, null, 2)}\n`);
 await writeFile('guardian-pr-preview.md', artifacts.prPreview);

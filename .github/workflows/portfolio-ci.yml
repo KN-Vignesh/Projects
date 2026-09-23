@@ -39,28 +39,23 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run TypeScript validation
-        id: typescript
         run: npm run lint
 
       - name: Run production build
-        id: build
         run: npm run build
 
       - name: Validate configured repository paths
-        id: project-references
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run guardian:repo
 
       - name: Run configured link check
-        id: links
         run: npm run guardian:links
 
       - name: Record dependency audit
         run: npm audit --audit-level=high --json > guardian/reports/npm-audit.json || true
 
       - name: Run browser and accessibility checks
-        id: browser
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/portfolio-server.log 2>&1 &
           server_pid=$!
@@ -69,13 +64,6 @@ jobs:
 
       - name: Generate Guardian report
         if: always()
-        env:
-          GUARDIAN_TYPESCRIPT_STATUS: ${{ steps.typescript.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_BUILD_STATUS: ${{ steps.build.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_PLAYWRIGHT_STATUS: ${{ steps.browser.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_ACCESSIBILITY_STATUS: ${{ steps.browser.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_LINKS_STATUS: ${{ steps.links.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_PROJECT_REFERENCES_STATUS: ${{ steps.project-references.outcome == 'success' && 'passed' || 'failed' }}
         run: npm run guardian:report -- --environment=ci
 
       - name: Collect Guardian evidence
@@ -123,23 +111,16 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run production smoke test
-        id: production-smoke
         run: npx playwright test tests/e2e/production.spec.ts
 
       - name: Run production link check
-        id: production-links
         run: npm run guardian:links
 
       - name: Run Lighthouse CI
-        id: lighthouse
         run: npx lhci autorun --collect.url="$PORTFOLIO_URL"
 
       - name: Generate production Guardian report
         if: always()
-        env:
-          GUARDIAN_PRODUCTION_STATUS: ${{ steps.production-smoke.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_LINKS_STATUS: ${{ steps.production-links.outcome == 'success' && 'passed' || 'failed' }}
-          GUARDIAN_LIGHTHOUSE_STATUS: ${{ steps.lighthouse.outcome == 'success' && 'passed' || 'failed' }}
         run: npm run guardian:report -- --environment=production
 
       - name: Collect production evidence

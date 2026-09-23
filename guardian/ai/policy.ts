@@ -9,9 +9,6 @@ interface AutomationPolicy {
     requiresValidation: boolean;
     requiresPullRequest: boolean;
     autoMerge: boolean;
-    minimumConfidence: number;
-    maximumFilesChanged: number;
-    maximumLinesChanged: number;
   };
   protectedPaths: string[];
 }

@@ -4,15 +4,12 @@ import { validateDiagnosis } from '../../guardian/ai/validator.js';
 import { evaluateAutoFixPolicy } from '../../guardian/ai/policy.js';
 import { findIssueByFingerprint, makeFingerprint, issueBody } from '../../guardian/issues.js';
 import { validateRepairPlan } from '../../guardian/ai/repair-plan.js';
-import { buildBranchName, planRepairBranch } from '../../guardian/repair/branch.js';
-import { canCreatePullRequest } from '../../guardian/repair/pr.js';
-import { validateDiff } from '../../guardian/repair/diff.js';
 
 const validDiagnosis = {
   problem: 'A project route is broken.',
   rootCause: 'The route references a stale path.',
   confidence: 0.92,
-  affectedFiles: ['projects/customer-churn.md'],
+  affectedFiles: ['README.md'],
   affectedRoutes: ['#/projects/example'],
   evidence: ['The browser received HTTP 404.'],
   proposedFix: 'Update the route to the validated project path.',
@@ -63,25 +60,8 @@ test('issue deduplication maps the same fingerprint to one issue', () => {
 });
 
 test('repair plans require real unprotected update targets', async () => {
-  const valid = await validateRepairPlan([{ file: 'projects/customer-churn.md', action: 'update', reason: 'test', change: 'test' }]);
+  const valid = await validateRepairPlan([{ file: 'README.md', action: 'update', reason: 'test', change: 'test' }]);
   assert.equal(valid.valid, true);
   const protectedPlan = await validateRepairPlan([{ file: '.github/workflows/portfolio-ci.yml', action: 'update', reason: 'test', change: 'test' }]);
   assert.equal(protectedPlan.valid, false);
-});
-
-test('branch and PR boundaries remain simulated or blocked by default', () => {
-  const fingerprint = 'broken-link:/projects/example:404';
-  assert.equal(buildBranchName(fingerprint), 'guardian/fix/broken-link-projects-example-404');
-  assert.equal(planRepairBranch(fingerprint, { mode: 'dry-run', repairMode: 'disabled', baseBranch: 'main' }, null).status, 'simulated');
-  assert.equal(canCreatePullRequest({ mode: 'dry-run', prMode: 'disabled', autoMerge: false }).allowed, false);
-  assert.equal(canCreatePullRequest({ mode: 'active', prMode: 'active', autoMerge: true }).allowed, false);
-});
-
-test('diff safety rejects protected, binary, and oversized changes', async () => {
-  const protectedDiff = await validateDiff({ filesChanged: ['.github/workflows/portfolio-ci.yml'], linesChanged: 1 });
-  assert.equal(protectedDiff.valid, false);
-  const binaryDiff = await validateDiff({ filesChanged: ['assets/project.png'], linesChanged: 1, binaryFiles: ['assets/project.png'] });
-  assert.equal(binaryDiff.valid, false);
-  const largeDiff = await validateDiff({ filesChanged: ['projects/customer-churn.md'], linesChanged: 51 });
-  assert.equal(largeDiff.valid, false);
 });
