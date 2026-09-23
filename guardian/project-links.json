@@ -1,0 +1,68 @@
+{
+  "repository": "KN-Vignesh/Projects",
+  "projects": [
+    {
+      "name": "Customer Churn",
+      "path": "Customer_Churn_Prediction_with_ML.ipynb",
+      "kind": "file",
+      "required": true,
+      "portfolioRoute": "#/projects/customer-churn"
+    },
+    {
+      "name": "VERO",
+      "path": "VERO",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/docs/VERO/README"
+    },
+    {
+      "name": "Qwen LoRA",
+      "path": "Ai-Cookbook/LoraFine-tuning",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Ai-Cookbook/LoraFine-tuning/README"
+    },
+    {
+      "name": "QLoRA",
+      "path": "Ai-Cookbook/QLoraFine-Tuning",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Ai-Cookbook/QLoraFine-Tuning/README"
+    },
+    {
+      "name": "BERT",
+      "path": "Ai-Cookbook/BERT_MODEL",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Ai-Cookbook/BERT_MODEL/README"
+    },
+    {
+      "name": "CNN Fundamentals",
+      "path": "Ai-Cookbook/CNN-Fundamentals",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Ai-Cookbook/CNN-Fundamentals/README"
+    },
+    {
+      "name": "Model Evaluation",
+      "path": "Ai-Cookbook/Combined_metric_Calc",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Ai-Cookbook/Combined_metric_Calc/README"
+    },
+    {
+      "name": "House Price Prediction",
+      "path": "Data-recipe/House_Price_Prediction",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Data-recipe/House_Price_Prediction/README"
+    },
+    {
+      "name": "Titanic",
+      "path": "Data-recipe/Titanic_Model",
+      "kind": "directory",
+      "required": true,
+      "portfolioRoute": "#/Data-recipe/Titanic_Model/README"
+    }
+  ]
+}

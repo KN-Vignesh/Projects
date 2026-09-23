@@ -1,0 +1,119 @@
+name: Portfolio Guardian
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  deployment_status:
+  schedule:
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Validate portfolio
+    if: >-
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run TypeScript validation
+        run: npm run lint
+
+      - name: Run production build
+        run: npm run build
+
+      - name: Validate configured repository paths
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run guardian:repo
+
+      - name: Run configured link check
+        run: npm run guardian:links
+
+      - name: Run browser and accessibility checks
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/portfolio-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          npx playwright test tests/e2e/home.spec.ts tests/e2e/accessibility.spec.ts
+
+      - name: Upload Guardian reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardian-quality-reports
+          path: |
+            guardian/reports/
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+
+  production:
+    name: Smoke test production
+    if: >-
+      (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch') &&
+      vars.PORTFOLIO_URL != ''
+    runs-on: ubuntu-latest
+    env:
+      PORTFOLIO_URL: ${{ vars.PORTFOLIO_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run production smoke test
+        run: npx playwright test tests/e2e/production.spec.ts
+
+      - name: Run production link check
+        run: npm run guardian:links
+
+      - name: Run Lighthouse CI
+        run: npx lhci autorun --collect.url="$PORTFOLIO_URL"
+
+      - name: Upload production reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardian-production-reports
+          path: |
+            guardian/reports/
+            .lighthouseci/
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore

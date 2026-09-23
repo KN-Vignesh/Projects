@@ -1,0 +1,23 @@
+{
+  "portfolioUrl": "${PORTFOLIO_URL}",
+  "codeRepository": "KN-Vignesh/Projects",
+  "portfolioRepository": "KN-Vignesh/Projects",
+  "requiredSections": [
+    "hero",
+    "engineering-system",
+    "project-system",
+    "ai-engineering-stack",
+    "learning-system",
+    "contact"
+  ],
+  "checks": {
+    "build": true,
+    "typescript": true,
+    "links": true,
+    "browser": true,
+    "accessibility": true,
+    "lighthouse": true,
+    "production": true,
+    "codeRepository": true
+  }
+}
