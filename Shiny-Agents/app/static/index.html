@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shiny Agents</title>
+    <meta
+      name="description"
+      content="Portfolio-grade CrewAI, Agents SDK, and LangGraph interface with Gemini and BYOK trial logic."
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body class="vero-shell">
+    <header class="portfolio-header">
+      <div class="brand-block">
+        <div class="brand-mark">A</div>
+        <div>
+          <div class="brand-row">
+            <span class="brand-name">Shiny Agents</span>
+            <span class="brand-chip">CrewAI + Gemini</span>
+          </div>
+          <p class="brand-subtitle">Portfolio / Projects / CrewAI Agent</p>
+        </div>
+      </div>
+
+      <nav class="header-actions" aria-label="Primary navigation">
+        <button type="button" class="pill-button ghost" id="portfolio-link">Portfolio</button>
+        <button type="button" class="pill-button primary" id="connect-gemini">Connect Gemini</button>
+      </nav>
+    </header>
+
+    <main class="main-shell">
+      <section class="hero-card">
+        <div class="hero-copy">
+          <p class="eyebrow">PORTFOLIO AGENT</p>
+          <h1>CrewAI Agent</h1>
+          <p class="hero-subtext">
+            Multi-agent workflows with Gemini, project-aware tools, and a hybrid free-trial + BYOK flow.
+          </p>
+        </div>
+        <div class="status-stack">
+          <div class="status-pill" id="access-pill">Checking access…</div>
+          <div class="mini-stat">
+            <span>Sponsored trial</span>
+            <strong id="trial-usage">0 / 3</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="agent-panel" aria-label="Agent selection">
+          <p class="panel-label">Choose runtime</p>
+          <button class="agent active" data-agent="crewai" type="button">
+            <strong>CrewAI</strong>
+            <span>Role-based builder</span>
+          </button>
+          <button class="agent" data-agent="agents-sdk" type="button">
+            <strong>Agents SDK</strong>
+            <span>Handoffs + guardrails</span>
+          </button>
+          <button class="agent" data-agent="langgraph" type="button">
+            <strong>LangGraph</strong>
+            <span>Graph review loop</span>
+          </button>
+
+          <div class="access-card">
+            <div class="card-header">
+              <span class="card-dot"></span>
+              <span>Gemini access</span>
+            </div>
+            <p id="access-summary">The app is checking your access state.</p>
+            <button id="key-trigger" type="button" class="secondary-button">Manage Gemini key</button>
+          </div>
+        </aside>
+
+        <section class="chat-panel" aria-live="polite">
+          <div class="panel-header">
+            <div class="panel-indicator">
+              <span class="live-dot"></span>
+              <div>
+                <p class="panel-label">ACTIVE AGENT</p>
+                <h2 id="agent-name">CrewAI</h2>
+              </div>
+            </div>
+            <div class="panel-status" id="agent-status">Ready</div>
+          </div>
+
+          <div class="messages" id="messages">
+            <div class="message assistant">
+              What would you like the active agent to inspect, explain, or build for you today?
+            </div>
+          </div>
+
+          <form id="chat-form" class="composer">
+            <textarea
+              id="message"
+              rows="2"
+              placeholder="Ask the agent to analyze, build, or explain something..."
+              required
+            ></textarea>
+            <button type="submit" id="send-button">Send</button>
+          </form>
+
+          <p class="bottom-note">
+            Default-key users receive 3 sponsored Gemini requests in a 24-hour window.
+            Personal keys bypass the trial cap.
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <div class="modal hidden" id="key-modal" aria-modal="true" role="dialog" aria-labelledby="key-modal-title">
+      <div class="modal-card">
+        <button type="button" class="close-button" id="close-key-modal" aria-label="Close Gemini settings">×</button>
+        <div class="modal-header">
+          <div class="brand-mark tiny">K</div>
+          <div>
+            <h3 id="key-modal-title">Connect Gemini</h3>
+            <p>Use your own key for unlimited usage, or keep the free trial.</p>
+          </div>
+        </div>
+
+        <label class="field-label" for="modal-api-key">Gemini API key</label>
+        <div class="input-wrap">
+          <input id="modal-api-key" type="password" placeholder="Paste your Gemini API key" autocomplete="off" />
+          <button type="button" class="input-toggle" id="toggle-key-visibility">Show</button>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="validate-key" class="pill-button primary">Validate & continue</button>
+          <button type="button" id="clear-key" class="pill-button ghost danger">Clear key</button>
+        </div>
+
+        <p class="security-note">
+          Keys are kept in this browser session only and are never exposed in the app or committed to source control.
+        </p>
+      </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
