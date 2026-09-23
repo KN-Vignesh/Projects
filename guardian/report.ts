@@ -21,8 +21,10 @@ export interface GuardianReport {
     issueCreation: 'enabled' | 'simulated' | 'disabled';
     aiDiagnosis: 'enabled' | 'simulated' | 'disabled';
     sourceModification: 'enabled' | 'blocked' | 'disabled';
+    repair: 'enabled' | 'simulated' | 'disabled';
     branchCreation: 'enabled' | 'simulated' | 'disabled';
     pullRequestCreation: 'enabled' | 'simulated' | 'disabled';
+    pullRequest: 'enabled' | 'simulated' | 'disabled';
     autoMerge: 'enabled' | 'disabled';
     vercelApi: 'enabled' | 'disabled';
     rollback: 'enabled' | 'disabled';
@@ -42,15 +44,25 @@ async function readCheckStatus(filePath: string): Promise<CheckStatus> {
   }
 }
 
+async function statusFromEnvironmentOrReport(name: string, filePath: string): Promise<CheckStatus> {
+  return (process.env[name] as CheckStatus | undefined) ?? readCheckStatus(filePath);
+}
+
 async function readAutomationConfig() {
   try {
     return JSON.parse(await readFile(path.join(process.cwd(), 'guardian', 'config.json'), 'utf8')) as {
       mode: 'observe' | 'dry-run' | 'active';
+      issueMode?: 'dry-run' | 'active';
+      aiDiagnosisMode?: 'dry-run' | 'active';
+      repairMode?: 'disabled' | 'active';
+      prMode?: 'disabled' | 'active';
       automation: Record<string, boolean>;
     };
   } catch {
     return {
       mode: 'dry-run' as const,
+      issueMode: 'dry-run' as const,
+      aiDiagnosisMode: 'dry-run' as const,
       automation: {},
     };
   }
@@ -64,8 +76,8 @@ export async function buildGuardianReport(environment = process.env.GUARDIAN_ENV
     playwright: (process.env.GUARDIAN_PLAYWRIGHT_STATUS as CheckStatus) ?? 'not-run',
     accessibility: (process.env.GUARDIAN_ACCESSIBILITY_STATUS as CheckStatus) ?? 'not-run',
     lighthouse: (process.env.GUARDIAN_LIGHTHOUSE_STATUS as CheckStatus) ?? 'not-run',
-    links: await readCheckStatus(path.join(reportsDirectory, 'links.json')),
-    projectReferences: await readCheckStatus(path.join(reportsDirectory, 'code-repository.json')),
+    links: await statusFromEnvironmentOrReport('GUARDIAN_LINKS_STATUS', path.join(reportsDirectory, 'links.json')),
+    projectReferences: await statusFromEnvironmentOrReport('GUARDIAN_PROJECT_REFERENCES_STATUS', path.join(reportsDirectory, 'code-repository.json')),
     dependencies: (process.env.GUARDIAN_DEPENDENCIES_STATUS as CheckStatus) ?? 'not-run',
     productionSmoke: (process.env.GUARDIAN_PRODUCTION_STATUS as CheckStatus) ?? 'not-run',
   };
@@ -88,11 +100,21 @@ export async function buildGuardianReport(environment = process.env.GUARDIAN_ENV
     ai: { diagnosed: 0, autoFixed: 0, pullRequestsCreated: 0 },
     automation: {
       mode,
-      issueCreation: state(automationConfig.automation.issueCreation) as GuardianReport['automation']['issueCreation'],
-      aiDiagnosis: state(automationConfig.automation.aiDiagnosis) as GuardianReport['automation']['aiDiagnosis'],
+      issueCreation: environment === 'dry-run'
+        ? 'simulated'
+        : automationConfig.issueMode === 'active'
+          ? 'enabled'
+          : state(automationConfig.automation.issueCreation) as GuardianReport['automation']['issueCreation'],
+      aiDiagnosis: environment === 'dry-run'
+        ? 'simulated'
+        : automationConfig.aiDiagnosisMode === 'active'
+          ? 'enabled'
+          : state(automationConfig.automation.aiDiagnosis) as GuardianReport['automation']['aiDiagnosis'],
       sourceModification: automationConfig.automation.sourceModification && mode === 'active' ? 'enabled' : 'blocked',
+      repair: environment === 'dry-run' ? 'simulated' : automationConfig.repairMode === 'active' && mode === 'active' ? 'enabled' : 'disabled',
       branchCreation: state(automationConfig.automation.branchCreation) as GuardianReport['automation']['branchCreation'],
       pullRequestCreation: state(automationConfig.automation.pullRequestCreation) as GuardianReport['automation']['pullRequestCreation'],
+      pullRequest: environment === 'dry-run' ? 'simulated' : automationConfig.prMode === 'active' && mode === 'active' ? 'enabled' : 'disabled',
       autoMerge: automationConfig.automation.autoMerge && mode === 'active' ? 'enabled' : 'disabled',
       vercelApi: automationConfig.automation.vercelApi && mode === 'active' ? 'enabled' : 'disabled',
       rollback: automationConfig.automation.rollback && mode === 'active' ? 'enabled' : 'disabled',

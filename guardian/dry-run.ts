@@ -1,6 +1,9 @@
 import type { Diagnosis } from './ai/types.js';
 import { evaluateAutoFixPolicy } from './ai/policy.js';
 import { validateRepairPlan, type RepairPlanItem } from './ai/repair-plan.js';
+import { executeRepairPlan } from './repair/executor.js';
+import { planRepairBranch, type BranchPreview } from './repair/branch.js';
+import { buildPullRequestPreview } from './repair/pr.js';
 import { makeFingerprint } from './issues.js';
 
 export interface DryRunArtifacts {
@@ -18,8 +21,9 @@ export interface DryRunArtifacts {
   issuePreview: string;
   repairPlan: RepairPlanItem[];
   repairValidation: { valid: boolean; reasons: string[] };
-  branchPreview: { wouldCreateBranch: boolean; branchName: string; baseBranch: string; baseCommit: string | null; riskLevel: string };
+  branchPreview: BranchPreview;
   prPreview: string;
+  repairExecution: { status: string; reason: string; filesChanged: string[]; operationsApplied: number };
 }
 
 export async function buildDryRunArtifacts(): Promise<DryRunArtifacts> {
@@ -36,7 +40,7 @@ export async function buildDryRunArtifacts(): Promise<DryRunArtifacts> {
     problem: failure.error,
     rootCause: 'Synthetic evidence represents a stale project route.',
     confidence: 0.91,
-    affectedFiles: ['README.md'],
+    affectedFiles: ['projects/customer-churn.md'],
     affectedRoutes: [failure.affectedUrl],
     evidence: failure.evidence,
     proposedFix: 'Replace the stale route with the validated project route.',
@@ -77,43 +81,34 @@ export async function buildDryRunArtifacts(): Promise<DryRunArtifacts> {
     change: diagnosis.proposedFix,
   }];
   const repairValidation = await validateRepairPlan(repairPlan);
-  const branchName = `guardian/fix-${failure.type}`;
-  const branchPreview = {
-    wouldCreateBranch: true,
-    branchName,
-    baseBranch: 'main',
-    baseCommit: process.env.GITHUB_SHA ?? null,
-    riskLevel: diagnosis.riskLevel,
+  const structuredPlan = {
+    repairId: `repair-${fingerprint.replace(/[^a-z0-9]+/gi, '-')}`,
+    fingerprint,
+    riskLevel: 'low' as const,
+    confidence: diagnosis.confidence,
+    operations: [{
+      type: 'update_route_reference' as const,
+      file: 'projects/customer-churn.md',
+      oldValue: '#/projects/old-customer-churn',
+      newValue: '#/projects/customer-churn',
+    }],
+    reason: diagnosis.proposedFix,
+    expectedValidation: ['typescript', 'build', 'playwright', 'links'],
   };
-  const prPreview = [
-    `# [Guardian] Fix ${failure.type}`,
-    '',
-    '## Status',
-    '',
-    'DRY RUN - PR NOT CREATED',
-    '',
-    `## Branch\n\n\`${branchName}\``,
-    '',
-    `## Problem\n\n${diagnosis.problem}`,
-    '',
-    `## Root Cause\n\n${diagnosis.rootCause}`,
-    '',
-    '## Proposed Fix',
-    '',
-    ...repairPlan.map((item) => `- ${item.file}: ${item.change}`),
-    '',
-    `## Risk\n\n${diagnosis.riskLevel}`,
-    '',
-    '## Validation',
-    '',
-    '- TypeScript',
-    '- Build',
-    '- Playwright',
-    '- Accessibility',
-    '- Lighthouse',
-    '- Link scan',
-    '- Project validation',
-    '',
-  ].join('\n');
-  return { failure, fingerprint, diagnosis, policy, issuePreview, repairPlan, repairValidation, branchPreview, prPreview };
+  const repairExecution = await executeRepairPlan(structuredPlan, {
+    mode: 'dry-run',
+    repairMode: 'disabled',
+    automation: { sourceModification: false },
+  }, 'main');
+  const branchPreview = planRepairBranch(fingerprint, { mode: 'dry-run', repairMode: 'disabled', baseBranch: 'main' }, process.env.GITHUB_SHA ?? null);
+  const prPreview = buildPullRequestPreview({
+    fingerprint,
+    branchName: branchPreview.branchName,
+    problem: diagnosis.problem,
+    rootCause: diagnosis.rootCause,
+    riskLevel: diagnosis.riskLevel,
+    repairPlan: repairPlan.map((item) => `${item.file}: ${item.change}`),
+    validation: ['TypeScript', 'Build', 'Playwright', 'Accessibility', 'Lighthouse', 'Link scan', 'Project validation'],
+  });
+  return { failure, fingerprint, diagnosis, policy, issuePreview, repairPlan, repairValidation, branchPreview, prPreview, repairExecution };
 }

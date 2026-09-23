@@ -1,8 +1,12 @@
 {
   "mode": "dry-run",
+  "issueMode": "active",
+  "aiDiagnosisMode": "active",
+  "repairMode": "disabled",
+  "prMode": "disabled",
   "automation": {
-    "issueCreation": false,
-    "aiDiagnosis": false,
+    "issueCreation": true,
+    "aiDiagnosis": true,
     "sourceModification": false,
     "branchCreation": false,
     "pullRequestCreation": false,

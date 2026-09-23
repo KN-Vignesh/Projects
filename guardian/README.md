@@ -37,7 +37,26 @@ The Vercel GitHub integration must publish deployment statuses for the post-depl
 
 ## Issue automation
 
-`guardian/issues.ts` provides deterministic fingerprints, Guardian label creation, and open-issue deduplication. `npm run guardian:issues` consumes a `GUARDIAN_FAILURE_FILE` and requires `GITHUB_TOKEN` plus `GITHUB_REPOSITORY`. It is intentionally not connected to normal read-only CI yet; a future issue workflow must grant only `issues: write` and pass sanitized evidence.
+`guardian/issues.ts` provides deterministic fingerprints, Guardian label creation, and open-issue deduplication. `npm run guardian:issues` consumes a `GUARDIAN_FAILURE_FILE` or downloaded Guardian reports and requires `GITHUB_TOKEN` plus `GITHUB_REPOSITORY`. The isolated `guardian-issues.yml` workflow is the first real activation: it runs only after a failed Guardian workflow, has `issues: write` but no contents or pull-request write permission, and stops after creating or updating issues.
+
+`guardian-ai-diagnosis.yml` is the Phase C handoff. It runs after successful issue activation, consumes `issue-results.json`, calls the configured provider, validates the response, and comments the diagnosis on the existing Issue. It has no source, branch, pull-request, merge, Vercel, or rollback capability.
+
+## Controlled repair boundary
+
+The repair layer currently provides only schema validation, finite operation validation, exact-replacement execution code, deterministic branch planning, PR previews, and dry-run artifacts. Configuration remains:
+
+```text
+mode = dry-run
+repairMode = disabled
+prMode = disabled
+autoMerge = false
+vercelApi = false
+rollback = false
+```
+
+Real repair additionally requires `mode=active`, `repairMode=active`, `GUARDIAN_ACTIVE_AUTOMATION=true`, a non-`main` branch, a low-risk validated plan, and successful deterministic validation. No workflow enables those gates. Branch creation and PR creation are planners only, and human review remains the final boundary.
+
+To test the real GitHub artifact and permission path, manually dispatch `guardian-issue-integration-test.yml` with the exact confirmation value `CREATE_AND_CLOSE_TEST_ISSUE`. It creates a synthetic Issue, verifies its fingerprint and labels, reruns the same failure to verify deduplication, then closes the test Issue. This workflow is not scheduled.
 
 ## Dry-run pipeline
 
@@ -66,7 +85,7 @@ Do not add speculative paths. A moved or deleted project should fail the reposit
 
 The provider-neutral diagnosis path is available through `npm run guardian:diagnose` when `AI_API_KEY`, `AI_MODEL`, `AI_BASE_URL` (optional), and `GUARDIAN_FAILURE_FILE` are configured. The response is parsed and validated against `guardian/ai/types.ts`; malformed or unsafe output stops the pipeline.
 
-`guardian/policies/automation-policy.json` currently permits only low-risk, human-reviewed repairs and blocks protected paths such as workflows, environment files, lockfiles, deployment configuration, and server entrypoints. No source-modification, branch-creation, pull-request, merge, rollback, or AI workflow is enabled yet. In particular, Guardian never pushes directly to `main` and never auto-merges.
+`guardian/policies/automation-policy.json` currently permits only low-risk, human-reviewed repairs and blocks protected paths such as workflows, environment files, lockfiles, deployment configuration, and server entrypoints. Phase C diagnosis is comment-only. Source modification, branch creation, pull-request creation, merge, rollback, and Vercel mutation remain disabled. Guardian never pushes directly to `main` and never auto-merges.
 
 ## Required credentials
 
@@ -74,5 +93,7 @@ The provider-neutral diagnosis path is available through `npm run guardian:diagn
 - GitHub Actions secret: `GITHUB_TOKEN` for issue or repository API operations. The standard Actions token is sufficient for read-only repository checks.
 - Optional future diagnosis secret: `AI_API_KEY`.
 - Optional future diagnosis variable: `AI_MODEL` and `AI_BASE_URL`.
+
+`AI_API_KEY` is a GitHub Actions secret. `AI_MODEL` and `AI_BASE_URL` are GitHub Actions variables. Diagnosis receives sanitized evidence only; credentials are never included in evidence artifacts or prompts.
 
 Do not commit `.env` files or place credentials in JSON configuration.

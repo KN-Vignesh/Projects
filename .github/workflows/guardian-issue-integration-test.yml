@@ -1,0 +1,83 @@
+name: Guardian Issue Integration Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type CREATE_AND_CLOSE_TEST_ISSUE to create and close a synthetic Issue'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  integration-test:
+    name: Verify Issue creation and deduplication
+    if: inputs.confirmation == 'CREATE_AND_CLOSE_TEST_ISSUE'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create synthetic failure evidence
+        run: |
+          cat > guardian/failure.json <<'EOF'
+          [{
+            "type": "bug",
+            "check": "synthetic Guardian integration test",
+            "affectedUrl": "/guardian-integration-test",
+            "error": "Synthetic failure for Issue API verification.",
+            "severity": "low",
+            "evidence": ["Created only by an explicitly confirmed manual workflow."]
+          }]
+          EOF
+
+      - name: Create first test Issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run guardian:issues
+
+      - name: Verify fingerprint and labels
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          issue_number=$(jq -r '.issues[0].issueNumber' guardian/reports/issue-results.json)
+          gh issue view "$issue_number" --json body,labels | tee /tmp/guardian-issue.json
+          grep -q 'guardian-fingerprint:' /tmp/guardian-issue.json
+          grep -q 'guardian' /tmp/guardian-issue.json
+          echo "$issue_number" > /tmp/guardian-issue-number
+
+      - name: Run same failure again
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run guardian:issues
+
+      - name: Verify no duplicate Issue
+        run: |
+          first=$(cat /tmp/guardian-issue-number)
+          second=$(jq -r '.issues[0].issueNumber' guardian/reports/issue-results.json)
+          test "$first" = "$second"
+
+      - name: Close synthetic test Issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          issue_number=$(cat /tmp/guardian-issue-number 2>/dev/null || true)
+          if [ -n "$issue_number" ]; then
+            gh issue close "$issue_number" --comment "Closed automatically after Guardian Issue integration verification."
+          fi
