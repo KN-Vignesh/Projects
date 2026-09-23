@@ -15,7 +15,13 @@
     "lint": "npm run lint --workspace=vero",
     "guardian:links": "tsx scripts/guardian/check-links.ts",
     "guardian:repo": "tsx scripts/guardian/check-code-repo.ts",
-    "guardian:check": "npm run guardian:links && npm run guardian:repo"
+    "guardian:report": "tsx scripts/guardian/generate-report.ts",
+    "guardian:issues": "tsx scripts/guardian/create-issues.ts",
+    "guardian:diagnose": "tsx scripts/guardian/diagnose-failure.ts",
+    "guardian:evidence": "tsx scripts/guardian/collect-evidence.ts",
+    "guardian:dry-run": "tsx scripts/guardian/dry-run.ts",
+    "guardian:test": "tsx --test tests/guardian/*.test.ts",
+    "guardian:check": "npm run guardian:links && npm run guardian:repo && npm run guardian:report"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

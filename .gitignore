@@ -5,3 +5,13 @@ node_modules/
 dist/
 VERO/dist/
 guardian/reports/
+guardian-report.json
+guardian-report.md
+guardian-evidence/
+guardian-issue-preview.md
+guardian-ai-diagnosis.json
+guardian-ai-diagnosis.md
+guardian-repair-plan.json
+guardian-repair-plan.md
+guardian-branch-preview.json
+guardian-pr-preview.md

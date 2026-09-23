@@ -52,12 +52,23 @@ jobs:
       - name: Run configured link check
         run: npm run guardian:links
 
+      - name: Record dependency audit
+        run: npm audit --audit-level=high --json > guardian/reports/npm-audit.json || true
+
       - name: Run browser and accessibility checks
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/portfolio-server.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           npx playwright test tests/e2e/home.spec.ts tests/e2e/accessibility.spec.ts
+
+      - name: Generate Guardian report
+        if: always()
+        run: npm run guardian:report -- --environment=ci
+
+      - name: Collect Guardian evidence
+        if: always()
+        run: npm run guardian:evidence
 
       - name: Upload Guardian reports
         if: always()
@@ -66,6 +77,8 @@ jobs:
           name: guardian-quality-reports
           path: |
             guardian/reports/
+            guardian-evidence/
+            guardian-report.*
             playwright-report/
             test-results/
           if-no-files-found: ignore
@@ -106,6 +119,14 @@ jobs:
       - name: Run Lighthouse CI
         run: npx lhci autorun --collect.url="$PORTFOLIO_URL"
 
+      - name: Generate production Guardian report
+        if: always()
+        run: npm run guardian:report -- --environment=production
+
+      - name: Collect production evidence
+        if: always()
+        run: npm run guardian:evidence
+
       - name: Upload production reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -113,6 +134,8 @@ jobs:
           name: guardian-production-reports
           path: |
             guardian/reports/
+            guardian-evidence/
+            guardian-report.*
             .lighthouseci/
             playwright-report/
             test-results/
