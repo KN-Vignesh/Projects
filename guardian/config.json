@@ -1,15 +1,4 @@
 {
-  "mode": "dry-run",
-  "automation": {
-    "issueCreation": false,
-    "aiDiagnosis": false,
-    "sourceModification": false,
-    "branchCreation": false,
-    "pullRequestCreation": false,
-    "autoMerge": false,
-    "vercelApi": false,
-    "rollback": false
-  },
   "portfolioUrl": "${PORTFOLIO_URL}",
   "codeRepository": "KN-Vignesh/Projects",
   "portfolioRepository": "KN-Vignesh/Projects",
