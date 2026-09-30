@@ -1,7 +1,0 @@
-- [VIGNESH K N](#/)
-- [01 ABOUT](#/README?id=vignesh-k-n)
-- [02 PROJECTS](#/README?id=project-system)
-- [03 AI STACK](#/README?id=ai-engineering-stack)
-- [04 LEARNING](#/README?id=learning-system)
-- [05 CONTACT](#/README?id=contact)
-- [GITHUB ↗](https://github.com/KN-Vignesh/Projects)
