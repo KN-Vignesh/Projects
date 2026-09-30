@@ -1,61 +1,99 @@
-<div class="vp-project">
+# Ames House Price Prediction & Multi-Model Stacking Regressor
 
-<div class="vp-project-header">
-<div class="vp-project-number">06 / 07</div>
-<div class="vp-project-category">ML FOUNDATIONS / TABULAR PREDICTION</div>
-</div>
+Advanced tabular regression pipeline on the Ames Housing dataset featuring custom feature engineering, 5-fold cross-validation benchmarking across 7 algorithms, and a meta-stacking ensemble achieving 0.1081 RMSLE.
 
-# HOUSE PRICE PREDICTION
+## Overview
 
-## A structured machine-learning workflow for predicting property sale prices.
+This project implements an end-to-end regression pipeline designed to predict residential property sale prices. Rather than relying on default model parameters, the pipeline features domain-specific feature engineering (`AmesFeatureEngineer`), skewed target log-transformation, 5-fold cross-validation across seven diverse regression algorithms (Ridge, Lasso, ElasticNet, GradientBoosting, XGBoost, LightGBM, CatBoost), and a meta-level `StackingRegressor` with out-of-fold blending.
 
-<div class="vp-tags"><span>REGRESSION</span><span>TABULAR ML</span><span>TFDF</span><span>AMES</span></div>
+## Problem
 
-<div class="vp-context">
-<div><small>ROLE IN PORTFOLIO</small><b>TABULAR ML FOUNDATION</b></div>
-<div><small>BUILDS ON</small><b>Supervised learning foundations</b></div>
-<div><small>CONNECTS TO</small><b>Titanic and model evaluation</b></div>
-</div>
+Property valuation involves complex tabular challenges:
+1. **High Cardinality & Interaction:** The Ames dataset contains 79 explanatory variables with extensive multi-collinearity (e.g. square footage across basement, first floor, and second floor).
+2. **Target Skewness:** Sale prices are heavily right-skewed, violating ordinary least squares normality assumptions.
+3. **Algorithm Divergence:** Linear regularized models and tree-based gradient boosters excel at different sub-distributions of the feature space.
 
----
+## Architecture
 
-## THE PROBLEM
+```text
+       ┌────────────────────────────────────────────────────────┐
+       │             Raw Ames Housing Data (79 Features)        │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             AmesFeatureEngineer Pipeline               │
+       │       - TotalSquareFeet = GrLivArea + TotalBsmtSF      │
+       │       - TotalBathrooms = FullBath + 0.5*HalfBath...    │
+       │       - HouseAge & RemodAge at time of sale            │
+       │       - log1p Target Transformation for SalePrice      │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             5-Fold Cross-Validation Benchmarking       │
+       │                                                        │
+       │  Ridge      Lasso     ElasticNet   GBoost   XGBoost... │
+       │ (0.1138)   (0.1118)    (0.1119)   (0.1123)  (0.1139)   │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │         Multi-Level Stacking Regressor (Meta-Model)    │
+       │       - Base Estimators: 7 cross-validated models      │
+       │       - Final Meta-Estimator: RidgeCV with L2 penalty  │
+       │       - Final Ensemble RMSLE: 0.1081                   │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │              Predictions & Submission File             │
+       │                 (Inverted expm1 prices)                │
+       └────────────────────────────────────────────────────────┘
+```
 
-Structured datasets often contain many interacting numerical and categorical features. The challenge is to prepare those features and train a model that can learn useful relationships for prediction.
+## Technology Stack
 
-## THE APPROACH
+- **Languages & Frameworks:** Python, Scikit-learn, CatBoost, XGBoost, LightGBM, NumPy, Pandas, Matplotlib, Seaborn.
+- **Dataset:** Kaggle House Prices: Advanced Regression Techniques (1,460 training rows, 1,459 test rows).
 
-The project uses TensorFlow Decision Forests on the Ames Housing dataset to create a regression workflow from data preparation through prediction.
+## Verified 5-Fold Cross-Validation Benchmark
 
-## THE SYSTEM
+Models were evaluated using 5-fold cross-validation scored on Root Mean Squared Logarithmic Error (RMSLE):
 
-**Housing features → dataset preparation → decision forest → regression predictions → evaluation/submission.**
+| Model Algorithm | Mean RMSLE | Standard Deviation | Notes |
+| :--- | :--- | :--- | :--- |
+| **Ridge Regression** | 0.1138 | 0.0087 | L2 Regularization baseline |
+| **Lasso Regression** | 0.1118 | 0.0067 | L1 Regularization with feature selection |
+| **ElasticNet** | 0.1119 | 0.0067 | Convex combination of L1 and L2 |
+| **Gradient Boosting (GBoost)** | 0.1123 | 0.0082 | Sequential residual boosting |
+| **XGBoost** | 0.1139 | 0.0070 | Extreme Gradient Boosting with shrinkage |
+| **CatBoost** | 0.1144 | 0.0073 | Categorical-aware symmetric tree boosting |
+| **LightGBM** | 0.1205 | 0.0091 | Leaf-wise tree growth gradient boosting |
+| **Stacking Regressor (Ensemble)** | **0.1081** | **0.0071** | **Combined 7 base models + RidgeCV meta-learner** |
 
-## IMPLEMENTATION
+*Key Takeaway: The multi-level Stacking Regressor outperformed every single individual model, reducing error from 0.1118 (best individual: Lasso) down to 0.1081.*
 
-The project includes the notebook, dataset resources and generated prediction output. It demonstrates a practical tabular ML pipeline and links to a walkthrough video.
+## Setup & Execution
 
-## WHAT THIS PROJECT DEMONSTRATES
+### Prerequisites
+```bash
+pip install numpy pandas scikit-learn xgboost lightgbm catboost matplotlib seaborn
+```
 
-**Regression workflows, structured data preparation, tree-based learning and reproducible prediction pipelines.**
+### Running the Notebook
+```bash
+jupyter notebook Data-recipe/House_Price_Prediction/House_Prices_Prediction_using_TFDF.ipynb
+```
 
----
+## Project Files
+- `House_Prices_Prediction_using_TFDF.ipynb`: Executed notebook with complete residual diagnostic plots and benchmarks.
+- `Dataset/train.csv` & `Dataset/test.csv`: Ames Housing raw tabular data.
+- `submission.csv`: Final generated predictions formatted for competition evaluation.
 
-## PROJECT CONNECTIONS
+## Limitations & Future Work
+- **Temporal Stationarity:** Pricing data is historic (2006–2010); modern macroeconomic interest rate shifts would require external indexing.
+- **Future Improvements:** Geospatial coordinate enrichment (geocoding neighborhood centroids) and Bayesian hyperparameter optimization (Optuna).
 
-<div class="vp-connection-grid">
-<div><small>← RELATED FOUNDATION</small><b>Supervised learning foundations</b><p>The technical context that helps explain this project.</p></div>
-<div><small>YOU ARE HERE</small><b>HOUSE PRICE PREDICTION</b><p>A self-contained experiment with its own complete technical story.</p></div>
-<div><small>NEXT CONNECTION →</small><b>Production-oriented ML systems — packaging prediction workflows behind usable interfaces</b><p>The next logical engineering direction in the portfolio.</p></div>
-</div>
-
----
-
-## TECHNICAL RESOURCES
-
-- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Data-recipe/House_Price_Prediction)
-- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
-
-> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
-
-</div>
+## License
+MIT License. Developed by Vignesh K N.

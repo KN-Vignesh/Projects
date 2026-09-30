@@ -1,61 +1,34 @@
-<div class="vp-project">
+# CNN Fundamentals & Image Preprocessing
 
-<div class="vp-project-header">
-<div class="vp-project-number">04 / 07</div>
-<div class="vp-project-category">MODEL ENGINEERING / COMPUTER VISION</div>
-</div>
+Deep learning image preprocessing and Convolutional Neural Network (CNN) architecture construction using TensorFlow and Keras on the MNIST handwritten digit dataset.
 
-# CNN FUNDAMENTALS
+## Overview
 
-## From raw images to learned visual features and classification.
+This notebook provides a step-by-step tutorial on preparing raw image tensors for deep learning. Using the MNIST dataset, it details the foundational transformations required before feeding visual data into convolutional networks: 4D tensor reshaping, float normalization (0–255 to 0.0–1.0), and categorical one-hot label encoding, culminating in a compiled `Sequential` Keras CNN model.
 
-<div class="vp-tags"><span>VISION</span><span>PYTORCH</span><span>PREPROCESSING</span><span>CNN</span></div>
+## Key Steps Demonstrated
 
-<div class="vp-context">
-<div><small>ROLE IN PORTFOLIO</small><b>DEEP LEARNING FOUNDATION</b></div>
-<div><small>BUILDS ON</small><b>Machine learning foundations</b></div>
-<div><small>CONNECTS TO</small><b>Evaluation and future multimodal systems</b></div>
-</div>
+1. **4D Tensor Reshaping:** Converting 2D grayscale arrays `(samples, 28, 28)` into the 4D input shape expected by convolutional layers: `(samples, height, width, channels)`.
+2. **Pixel Value Normalization:** Scaling uint8 pixel intensities from $[0, 255]$ to $[0.0, 1.0]$ float32 to stabilize gradient descent and avoid exploding gradients.
+3. **One-Hot Categorical Encoding:** Transforming integer scalar class labels ($0 \dots 9$) into 10-dimensional probability vectors for categorical cross-entropy optimization.
+4. **CNN Architecture Construction:** Constructing a sequential model with `Conv2D`, `MaxPooling2D`, `Flatten`, and `Dense` layers with Softmax output activation.
 
----
+## Technology Stack
 
-## THE PROBLEM
+- **Framework:** TensorFlow / Keras
+- **Libraries:** NumPy, Matplotlib
 
-Image data needs consistent preprocessing before a model can learn useful representations. The challenge is to build a repeatable pipeline that transforms raw images into useful features and measurable predictions.
+## Setup & Execution
 
-## THE APPROACH
+### Prerequisites
+```bash
+pip install tensorflow numpy matplotlib
+```
 
-The project combines image preparation with a convolutional neural network training workflow, including augmentation, normalization, model construction and validation.
+### Running the Notebook
+```bash
+jupyter notebook Ai-Cookbook/CNN-Fundamentals/CNN_Fundamental_Preprocessing.ipynb
+```
 
-## THE SYSTEM
-
-**Image → preprocessing → augmentation → convolutional layers → learned features → classifier → metrics.**
-
-## IMPLEMENTATION
-
-The workflow covers loading and visualizing data, augmentation, normalization, CNN architecture basics, loss and optimizer configuration, training loops, validation and model checkpoints.
-
-## WHAT THIS PROJECT DEMONSTRATES
-
-**Data pipelines for deep learning, feature learning, training loops, validation and the relationship between preprocessing choices and model behavior.**
-
----
-
-## PROJECT CONNECTIONS
-
-<div class="vp-connection-grid">
-<div><small>← RELATED FOUNDATION</small><b>Machine learning foundations</b><p>The technical context that helps explain this project.</p></div>
-<div><small>YOU ARE HERE</small><b>CNN FUNDAMENTALS</b><p>A self-contained experiment with its own complete technical story.</p></div>
-<div><small>NEXT CONNECTION →</small><b>Model Evaluation — turning training outcomes into comparable evidence</b><p>The next logical engineering direction in the portfolio.</p></div>
-</div>
-
----
-
-## TECHNICAL RESOURCES
-
-- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/CNN-Fundamentals)
-- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
-
-> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
-
-</div>
+## License
+MIT License. Developed by Vignesh K N.

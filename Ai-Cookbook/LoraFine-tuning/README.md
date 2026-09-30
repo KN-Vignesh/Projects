@@ -1,144 +1,206 @@
-<div class="vp-project">
+# Qwen / LoRA Parameter-Efficient Fine-Tuning
 
-<div class="vp-project-header">
-  <div class="vp-project-number">PROJECT_002</div>
-  <div>GENERATIVE AI / PEFT</div>
-</div>
+Parameter-efficient fine-tuning of Qwen2.5-0.5B-Instruct using low-rank adaptation (LoRA) for structured domain response generation.
 
-# QWEN / LORA<br>ADAPTATION
+## Overview
 
-## Teaching an open-weight language model a new task without retraining the entire model.
+This project demonstrates parameter-efficient fine-tuning (PEFT) on an open-weight language model (`Qwen/Qwen2.5-0.5B-Instruct`). By freezing the 495-million-parameter base model and injecting trainable rank decomposition matrices into the multi-head attention projections (`q_proj`, `k_proj`, `v_proj`, `o_proj`), the model is taught a rigid enterprise HR response protocol while training only **0.2184%** of total parameters.
 
-<div class="vp-tags">
-  <span>LLM</span>
-  <span>PEFT</span>
-  <span>QWEN</span>
-  <span>PYTORCH</span>
-  <span>LoRA</span>
-</div>
+## Problem
 
-<div class="vp-context">
-  <div><small>ROLE IN PORTFOLIO</small><b>LLM ADAPTATION FOUNDATION</b></div>
-  <div><small>TRAINING STRATEGY</small><b>PARAMETER-EFFICIENT FINE-TUNING</b></div>
-  <div><small>CONNECTS TO</small><b>QLoRA · EVALUATION · SERVING</b></div>
-</div>
+Full parameter fine-tuning of modern language models poses serious engineering hurdles:
+1. **Excessive VRAM Footprint:** Storing optimizer states (e.g. AdamW requires 8 bytes per parameter in fp32), gradients, and activations for billions of weights requires multi-GPU clusters.
+2. **Catastrophic Forgetting:** Overwriting all base weights on a small specialized dataset causes the model to lose general reasoning and instruction-following abilities.
+3. **Storage & Deployment Overhead:** Saving a full checkpoint per specialized task requires gigabytes of disk and complicates serving multi-tenant models.
 
-<div class="vp-log">
-  <div class="vp-log-head">SYSTEM THREAD / LORA_002</div>
-  <div class="vp-log-row"><span>BASE</span><b>OPEN-WEIGHT QWEN FAMILY MODEL</b></div>
-  <div class="vp-log-row"><span>TRAINING</span><b>SUPERVISED FINE-TUNING WITH LoRA ADAPTERS</b></div>
-  <div class="vp-log-row"><span>TARGETS</span><b>SELECTED ATTENTION PROJECTIONS SUCH AS Q_PROJ / V_PROJ</b></div>
-  <div class="vp-log-row"><span>OBJECTIVE</span><b>ADAPT A SMALL TRAINABLE SURFACE</b></div>
-  <div class="vp-log-row"><span>OUTPUT</span><b>ADAPTER WEIGHTS / OPTIONAL MERGED MODEL</b></div>
-</div>
+## Motivation
 
-## 01 — THE PROBLEM
+LoRA (Low-Rank Adaptation) addresses these issues by freezing the pretrained weight matrix $W_0 \in \mathbb{R}^{d \times k}$ and parameterizing the weight update $\Delta W$ as the product of two low-rank matrices:
+$$\Delta W = B \cdot A$$
+where $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$, with rank $r \ll \min(d, k)$. During training, only $A$ and $B$ receive gradient updates, reducing the memory required for optimizer states and producing compact adapter artifacts that can be swapped dynamically at inference.
 
-Full fine-tuning updates a very large number of model parameters. That increases compute, memory and storage requirements.
+## Key Capabilities
 
-The engineering question is:
+- **Targeted Attention Projection Adaptation:** Targets query (`q_proj`), key (`k_proj`), value (`v_proj`), and output (`o_proj`) projections for maximum adaptation capacity with minimal rank.
+- **Micro-Artifact Generation:** Generates lightweight adapter weights without altering the underlying base model files.
+- **Strict Format Adherence:** Transforms verbose conversational replies into strict enterprise outputs (`HR_RESPONSE: <response>`).
+- **Before-and-After Inference Verification:** Side-by-side evaluation verifying that the base model adheres to the domain schema post-adaptation.
 
-**How much task-specific adaptation can be introduced while keeping most pretrained knowledge frozen?**
+## Architecture
 
-LoRA answers that by introducing a small number of trainable low-rank matrices while leaving the base model weights frozen.
+```text
+       ┌────────────────────────────────────────────────────────┐
+       │                Input Employee Prompt                   │
+       │    "Employee: I need leave tomorrow. Response:"        │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │              Qwen2.5-0.5B-Instruct Base                │
+       │          (Frozen Weights W_0 - 494M params)            │
+       │                                                        │
+       │   q_proj         k_proj         v_proj         o_proj  │
+       │     │              │              │              │     │
+       │     ▼              ▼              ▼              ▼     │
+       │  [Frozen]       [Frozen]       [Frozen]       [Frozen] │
+       └─────┼──────────────┼──────────────┼──────────────┼─────┘
+             │ +            │ +            │ +            │ +
+       ┌─────▼──────────────▼──────────────▼──────────────▼─────┐
+       │             Trainable LoRA Adapters (ΔW)               │
+       │                  (r = 8, alpha = 16)                   │
+       │     │              │              │              │     │
+       │   [ B·A ]        [ B·A ]        [ B·A ]        [ B·A ] │
+       │ (1.08M Trainable Parameters · 0.2184% of total)        │
+       └───────────────────────────┬────────────────────────────┘
+                                   │
+                                   ▼
+       ┌────────────────────────────────────────────────────────┐
+       │                 Supervised Loss / Output               │
+       │  "HR_RESPONSE: Please submit your leave request..."    │
+       └────────────────────────────────────────────────────────┘
+```
 
-## 02 — WHY THIS APPROACH
+## How It Works
 
-LoRA changes the optimization surface instead of requiring every model parameter to participate in training.
+1. **Base Model Loading:** `Qwen/Qwen2.5-0.5B-Instruct` is loaded in half-precision (`torch.float16`) to minimize baseline memory overhead.
+2. **Prompt Template Formatting:** Samples are formatted using chat templates with explicit instruction and role boundaries:
+   ```text
+   ### Instruction:
+   Respond to the employee using exactly this format:
+   HR_RESPONSE: <your response>
+   ### Employee:
+   <query>
+   ### Response:
+   HR_RESPONSE: <target text>
+   ```
+3. **LoRA Injection:** `LoraConfig` from Hugging Face `peft` attaches low-rank adapters to `q_proj`, `k_proj`, `v_proj`, and `o_proj`.
+4. **Supervised Fine-Tuning (SFT):** The model is trained using Hugging Face `Trainer` with `DataCollatorForLanguageModeling(mlm=False)` for 15 epochs.
+5. **Inference & Verification:** Test prompts are passed through `model.generate()` to verify strict syntax adherence.
 
-That creates a useful engineering trade-off:
+## Technology Stack
 
-**less trainable state → lower adaptation cost → smaller artifacts → faster experimentation**
+### Models
+- **Base Model:** `Qwen/Qwen2.5-0.5B-Instruct` (495,114,112 total parameters).
+- **Adapter Type:** Low-Rank Adaptation (LoRA) via PEFT.
 
-The project is therefore useful as a bridge from Transformer fundamentals into practical LLM engineering.
+### Frameworks & Libraries
+- **PyTorch:** Underlying tensor computation and GPU acceleration.
+- **Hugging Face Transformers (4.46+):** Model architecture, tokenizer, and `Trainer` abstraction.
+- **PEFT (0.13+):** Parameter-efficient fine-tuning matrix injection.
+- **Datasets:** Tokenized dataset mapping and batch collation.
+- **Accelerate:** Efficient memory management and mixed-precision execution.
 
-## 03 — SYSTEM
+## Engineering Decisions
 
-<div class="vp-architecture">
-  <div class="vp-architecture-head">
-    <span>PIPE_002</span>
-    <span>PARAMETER-EFFICIENT ADAPTATION</span>
-  </div>
+1. **Why Qwen2.5-0.5B-Instruct?**  
+   The 0.5B parameter variant provides modern architectural design (RoPE, SwiGLU, RMSNorm) and instruction-following capability while being small enough to train on a single consumer GPU or free Google Colab T4 tier without out-of-memory errors.
 
-  <div class="vp-pipeline">
-    <div class="vp-pipeline-step"><span>01</span><b>BASE QWEN</b></div>
-    <div class="vp-pipeline-step"><span>02</span><b>FREEZE BASE WEIGHTS</b></div>
-    <div class="vp-pipeline-step"><span>03</span><b>INJECT LoRA ADAPTERS</b></div>
-    <div class="vp-pipeline-step"><span>04</span><b>FINE-TUNE</b></div>
-    <div class="vp-pipeline-step"><span>05</span><b>EVALUATE / MERGE</b></div>
-  </div>
-</div>
+2. **Why adapt all four attention projections (`q_proj`, `k_proj`, `v_proj`, `o_proj`)?**  
+   Early LoRA implementations often adapted only query and value matrices ($W_q, W_v$). Recent research (e.g. QLoRA paper by Dettmers et al.) demonstrated that adapting all attention projections with a smaller rank ($r=8$) yields higher expressive capacity and faster loss convergence than adapting only $W_q, W_v$ with larger rank ($r=16$).
 
-The workflow targets selected attention projections, allowing the trainable surface to stay intentionally small.
+3. **Why rank $r = 8$ and alpha $\alpha = 16$?**  
+   The scaling factor is $\frac{\alpha}{r} = \frac{16}{8} = 2.0$. A scaling factor of 2 provides a stable gradient update balance that allows the model to learn the strict output prefix without destabilizing general vocabulary representations.
 
-## 04 — IMPLEMENTATION
+4. **Why float16 precision?**  
+   `torch.float16` reduces base model memory from ~2.0 GB (in fp32) to ~1.0 GB, leaving ample headroom for activation caching during backpropagation.
 
-The implementation uses a Qwen-family model together with PEFT-style LoRA configuration.
+## Project Structure
 
-The important engineering boundaries are:
+```text
+Ai-Cookbook/LoraFine-tuning/
+├── README.md                     # Comprehensive technical documentation
+└── LORA_WITH_QWENN_MODEL.ipynb   # Executed Jupyter notebook with logged outputs
+```
 
-**base model loading → adapter configuration → trainable parameter selection → supervised fine-tuning → evaluation → optional merge**
+## Setup & Execution
 
-This makes the project explainable at the system level instead of presenting fine-tuning as a single opaque training command.
+### Prerequisites
+- Python 3.10+
+- CUDA-capable GPU (Google Colab T4, NVIDIA RTX 3060+, or cloud instance with >= 6GB VRAM)
 
-## 05 — WHAT THIS PROJECT DEMONSTRATES
+### Installation
+```bash
+pip install -q -U torch transformers datasets peft accelerate
+```
 
-**Parameter-efficient fine-tuning**
+### Running the Notebook
+Open and run `LORA_WITH_QWENN_MODEL.ipynb` in Jupyter Notebook, VS Code, or Google Colab:
+```bash
+jupyter notebook Ai-Cookbook/LoraFine-tuning/LORA_WITH_QWENN_MODEL.ipynb
+```
 
-Only a relatively small set of adapter parameters is trained.
+## Verified Configuration & Training Parameters
 
-**Frozen versus trainable state**
+The following parameters are extracted directly from the verified notebook execution:
 
-The project makes the distinction explicit, which is important when reasoning about memory and optimization cost.
+| Parameter | Measured / Configured Value |
+| :--- | :--- |
+| **Base Model** | `Qwen/Qwen2.5-0.5B-Instruct` |
+| **Precision** | `torch.float16` |
+| **LoRA Rank ($r$)** | `8` |
+| **LoRA Alpha ($\alpha$)** | `16` |
+| **LoRA Dropout** | `0.05` |
+| **Target Modules** | `["q_proj", "k_proj", "v_proj", "o_proj"]` |
+| **Total Model Parameters** | 495,114,112 |
+| **Trainable Parameters** | **1,081,344** (0.2184% of total) |
+| **Batch Size** | 1 (per device) |
+| **Learning Rate** | `2e-4` |
+| **Epochs** | 15 |
+| **Optimization Steps** | 75 |
+| **Training Runtime** | 18.06 seconds |
+| **Final Training Loss** | **0.7089** |
 
-**Target-module selection**
+## Evaluation & Results
 
-Attention projections provide a focused surface for adaptation.
+### Qualitative Verification (Before vs. After Adaptation)
 
-**Artifact strategy**
+The model was tested with identical employee inquiries before and after adapter training:
 
-Adapters can remain separate from the base model or participate in a merge path when deployment requirements call for it.
+#### Test Prompt 1
+```text
+Respond to the employee using exactly this format:
+HR_RESPONSE: <your response>
+Employee: I need leave tomorrow.
+Response:
+```
 
-## 06 — ENGINEERING TRADE-OFFS
+- **Before LoRA (Base Model Output):**
+  > *"Employee: I understand that you need some time off tomorrow. Please let me know if there is anything specific you would like to discuss or if you have any questions before we proceed."*  
+  *(Failed: Failed the requested prefix schema; produced generic conversational reply).*
 
-LoRA is not automatically the correct answer for every model adaptation problem.
+- **After LoRA (Adapted Model Output):**
+  > **`HR_RESPONSE: Please submit your leave request through the HR portal.`**  
+  *(Success: Follows exact required prefix and tone).*
 
-The design trade-offs include:
+#### Test Prompt 2
+```text
+Respond to the employee using exactly this format:
+HR_RESPONSE: <your response>
+Employee: Can I work from home?
+Response:
+```
 
-- adapter size versus task specialization
-- target modules versus adaptation coverage
-- compute budget versus quality
-- separate adapters versus merged deployment artifacts
-- experimentation speed versus production simplicity
+- **After LoRA (Adapted Model Output):**
+  > **`HR_RESPONSE: Employees can work from home two days per week.`**  
+  *(Success: Correct domain resolution and strict formatting).*
 
-The point of the project is to make those trade-offs visible.
+## Limitations
 
-## 07 — LIMITATIONS
+- **Dataset Scale:** The experiment serves as an architectural demonstration of schema-constrained adaptation using a small 5-sample training set; larger production use cases require hundreds of diverse policy queries.
+- **In-Memory Adaptation Only:** The notebook demonstrates PEFT parameter optimization but does not export merged safetensors or serve the model via an inference endpoint (e.g. vLLM).
+- **Base Model Hallucinations:** On queries outside the narrow training samples, the small 0.5B base model may still generate generic responses if prompting is ambiguous.
 
-This page describes the engineering workflow rather than presenting unsupported benchmark claims.
+## Future Improvements
 
-For a stronger production evaluation, the next version should record:
+- Merging adapter weights back into base model (`model.merge_and_unload()`) for zero-overhead inference serving.
+- Exporting to GGUF format for edge deployment with `llama.cpp`.
+- Adding automated schema validation (e.g. regex matching test suite) to measure format compliance rate across a 100-sample test set.
 
-- task-level quality metrics
-- baseline versus adapted-model comparisons
-- training configuration
-- resource usage
-- inference characteristics
-- representative qualitative examples
+## References
 
-## 08 — RELATED SYSTEMS
+- Hu, E. J., et al. (2021). *LoRA: Low-Rank Adaptation of Large Language Models.* arXiv:2106.09685.
+- Qwen Team. (2024). *Qwen2.5: A Party of Foundation Models.* Alibaba Cloud.
 
-<div class="vp-connection-grid">
-  <div><small>← FOUNDATION</small><b>BERT / Transformer workflows</b><p>Pretrained-model adaptation and task setup provide the conceptual base.</p></div>
-  <div><small>YOU ARE HERE</small><b>QWEN / LoRA ADAPTATION</b><p>A self-contained parameter-efficient fine-tuning system.</p></div>
-  <div><small>NEXT CONNECTION →</small><b>QLoRA</b><p>Adds quantization to reduce the memory pressure of the frozen base model.</p></div>
-</div>
+## License
 
-## 09 — SOURCE CODE
-
-- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/LoraFine-tuning)
-- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
-
-> This page is designed to stand on its own. Connected projects provide context, but they are not required to understand the system described here.
-
-</div>
+MIT License. Developed by Vignesh K N.

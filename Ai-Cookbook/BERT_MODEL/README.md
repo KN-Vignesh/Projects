@@ -1,61 +1,40 @@
-<div class="vp-project">
+# BERT & Transformer NLP Workflows
 
-<div class="vp-project-header">
-<div class="vp-project-number">03 / 07</div>
-<div class="vp-project-category">MODEL ENGINEERING / NLP</div>
-</div>
+Downstream NLP workflows demonstrating Hugging Face Transformers pipelines (classification, summarization, NER, question answering, translation) and dense sentence embeddings via SentenceTransformers.
 
-# BERT
+## Overview
 
-## Understanding the workflow behind adapting pretrained Transformer models to downstream language tasks.
+This project provides an operational tour of Transformer architectures applied to standard natural language processing tasks. Implemented via Hugging Face `transformers` and `sentence-transformers`, the notebook demonstrates how pretrained weights are utilized for zero-shot and transfer-learning workflows across 6 downstream NLP modalities.
 
-<div class="vp-tags"><span>TRANSFORMERS</span><span>NLP</span><span>CLASSIFICATION</span><span>NER</span></div>
+## Key Capabilities
 
-<div class="vp-context">
-<div><small>ROLE IN PORTFOLIO</small><b>TRANSFORMER MODEL ENGINEERING</b></div>
-<div><small>BUILDS ON</small><b>Machine learning foundations</b></div>
-<div><small>CONNECTS TO</small><b>LoRA / QLoRA and model evaluation</b></div>
-</div>
+1. **Sequence Classification:** Binary sentiment analysis evaluating movie reviews and customer support transcripts.
+2. **Abstractive Summarization:** Context compression on news editorials using constrained sequence length limits (`max_length=10`).
+3. **Named Entity Recognition (NER):** Token-level entity classification identifying organizations (e.g. Apple, Samsung) and contextual mentions.
+4. **Extractive Question Answering:** Span-level context extraction locating specific answers (e.g. dates, names) within incoming email text.
+5. **Machine Translation:** English-to-French text translation.
+6. **Dense Sentence Embeddings:** Generating 384-dimensional semantic dense vectors using `all-MiniLM-L6-v2` for semantic similarity search.
 
----
+## Technology Stack
 
-## THE PROBLEM
+- **Libraries:** Hugging Face `transformers` (4.46+), `datasets`, `sentence-transformers`, `torch`, `pandas`.
+- **Pretrained Models:** Default Hugging Face pipeline weights and `sentence-transformers/all-MiniLM-L6-v2`.
 
-Pretrained language models contain useful linguistic representations, but downstream tasks require careful preparation of data, tokenization, task-specific heads, training configuration and evaluation.
+## Setup & Execution
 
-## THE APPROACH
+### Prerequisites
+```bash
+pip install -q transformers==4.46.3 datasets sentence-transformers torch pandas
+```
 
-The project follows the standard Transformer fine-tuning workflow: prepare task data, tokenize inputs, configure a pretrained model for the target objective, train and evaluate.
+### Running the Notebook
+```bash
+jupyter notebook Ai-Cookbook/BERT_MODEL/BERT_MODEL.ipynb
+```
 
-## THE SYSTEM
+## Project Structure
+- `BERT_MODEL.ipynb`: Executed notebook containing code cells and pipeline outputs.
+- `README.md`: Technical documentation.
 
-**Text → tokenizer → token representations → pretrained Transformer → task head → predictions → evaluation.**
-
-## IMPLEMENTATION
-
-The notebooks and notes cover classification, named-entity recognition and sentence-oriented workflows, with attention to dataset preparation, tokenization, training arguments and evaluation.
-
-## WHAT THIS PROJECT DEMONSTRATES
-
-**Transformer workflows, NLP preprocessing, downstream adaptation, task formulation and evaluation. These concepts also provide useful foundations for modern LLM engineering.**
-
----
-
-## PROJECT CONNECTIONS
-
-<div class="vp-connection-grid">
-<div><small>← RELATED FOUNDATION</small><b>Machine learning foundations</b><p>The technical context that helps explain this project.</p></div>
-<div><small>YOU ARE HERE</small><b>BERT</b><p>A self-contained experiment with its own complete technical story.</p></div>
-<div><small>NEXT CONNECTION →</small><b>LoRA — a more parameter-efficient approach to adapting Transformer models</b><p>The next logical engineering direction in the portfolio.</p></div>
-</div>
-
----
-
-## TECHNICAL RESOURCES
-
-- **Notebook:** [Open the implementation on GitHub](https://github.com/KN-Vignesh/Projects/tree/main/Ai-Cookbook/BERT_MODEL)
-- **Repository:** [KN-Vignesh/Projects](https://github.com/KN-Vignesh/Projects)
-
-> This page is designed to stand on its own. The connected projects above provide additional context, but they are not required to understand this system.
-
-</div>
+## License
+MIT License. Developed by Vignesh K N.
