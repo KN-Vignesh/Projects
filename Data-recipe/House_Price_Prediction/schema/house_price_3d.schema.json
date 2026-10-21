@@ -1,0 +1,634 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/KN-Vignesh/Projects/main/Data-recipe/House_Price_Prediction/schema/house_price_3d.schema.json",
+  "title": "Ames House Price 3D Prediction Surface & Evaluation Asset",
+  "description": "Versioned static JSON schema for the Ames House Price Prediction 3D surface, representative held-out house examples, exact SHAP attributions, and 5-fold out-of-fold evaluation metrics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "sourceRevision",
+    "model",
+    "dataset",
+    "features",
+    "surface",
+    "examples",
+    "evaluation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 20
+    },
+    "sourceRevision": {
+      "type": "string",
+      "minLength": 7
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "architecture",
+        "targetVariable",
+        "targetCurrency",
+        "targetUnit",
+        "targetTransformation",
+        "inverseTransformation",
+        "randomSeed",
+        "cvFolds",
+        "artifactPath",
+        "baseEstimators",
+        "metaEstimator",
+        "cvBenchmarks"
+      ],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "architecture": { "type": "string", "minLength": 1 },
+        "targetVariable": { "type": "string", "const": "SalePrice" },
+        "targetCurrency": { "type": "string", "const": "USD" },
+        "targetUnit": { "type": "string", "const": "USD" },
+        "targetTransformation": { "type": "string", "const": "log1p" },
+        "inverseTransformation": { "type": "string", "const": "expm1" },
+        "randomSeed": { "type": "integer" },
+        "cvFolds": { "type": "integer", "minimum": 2 },
+        "artifactPath": { "type": "string", "minLength": 1 },
+        "baseEstimators": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "name", "estimatorClass", "hyperparameters", "metaWeight"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "estimatorClass": { "type": "string" },
+              "hyperparameters": { "type": "object" },
+              "metaWeight": { "type": "number" }
+            }
+          }
+        },
+        "metaEstimator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "estimatorClass", "alpha", "interceptLog1p"],
+          "properties": {
+            "name": { "type": "string" },
+            "estimatorClass": { "type": "string" },
+            "alpha": { "type": "number" },
+            "interceptLog1p": { "type": "number" }
+          }
+        },
+        "cvBenchmarks": {
+          "type": "array",
+          "minItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["model", "meanRmsle", "stdRmsle", "foldRmsle", "isFinalEnsemble"],
+            "properties": {
+              "model": { "type": "string" },
+              "meanRmsle": { "type": "number", "minimum": 0 },
+              "stdRmsle": { "type": "number", "minimum": 0 },
+              "foldRmsle": {
+                "type": "array",
+                "minItems": 5,
+                "maxItems": 5,
+                "items": { "type": "number", "minimum": 0 }
+              },
+              "isFinalEnsemble": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source",
+        "trainFile",
+        "testFile",
+        "trainSha256",
+        "testSha256",
+        "rawTrainRows",
+        "cleanedTrainRows",
+        "removedOutlierCount",
+        "removedOutlierIds",
+        "outlierFilterRule",
+        "testRows",
+        "rawFeatureCount",
+        "engineeredFeatureCount",
+        "preprocessedFeatureCount",
+        "targetSummaryUsd"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "source": { "type": "string" },
+        "trainFile": { "type": "string" },
+        "testFile": { "type": "string" },
+        "trainSha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+        "testSha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+        "rawTrainRows": { "type": "integer", "const": 1460 },
+        "cleanedTrainRows": { "type": "integer", "const": 1458 },
+        "removedOutlierCount": { "type": "integer", "const": 2 },
+        "removedOutlierIds": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "outlierFilterRule": { "type": "string" },
+        "testRows": { "type": "integer", "const": 1459 },
+        "rawFeatureCount": { "type": "integer", "const": 79 },
+        "engineeredFeatureCount": { "type": "integer", "const": 88 },
+        "preprocessedFeatureCount": { "type": "integer", "minimum": 200 },
+        "targetSummaryUsd": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max", "mean", "median", "std", "q05", "q25", "q75", "q95", "unit"],
+          "properties": {
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "mean": { "type": "number" },
+            "median": { "type": "number" },
+            "std": { "type": "number" },
+            "q05": { "type": "number" },
+            "q25": { "type": "number" },
+            "q75": { "type": "number" },
+            "q95": { "type": "number" },
+            "unit": { "type": "string", "const": "USD" }
+          }
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surfaceAxes", "engineeredFeatures", "inputFeatures"],
+      "properties": {
+        "surfaceAxes": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "axis",
+              "name",
+              "label",
+              "unit",
+              "kind",
+              "isIntegerInDataset",
+              "min",
+              "max",
+              "median",
+              "mean",
+              "q05",
+              "q95",
+              "selectionRationale"
+            ],
+            "properties": {
+              "axis": { "type": "string", "enum": ["x", "y"] },
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "unit": { "type": "string" },
+              "kind": { "type": "string", "enum": ["numerical", "ordinal"] },
+              "isIntegerInDataset": { "type": "boolean" },
+              "min": { "type": "number" },
+              "max": { "type": "number" },
+              "median": { "type": "number" },
+              "mean": { "type": "number" },
+              "q05": { "type": "number" },
+              "q95": { "type": "number" },
+              "selectionRationale": { "type": "string" }
+            }
+          }
+        },
+        "engineeredFeatures": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "formula", "unit", "sourceColumns"],
+            "properties": {
+              "name": { "type": "string" },
+              "formula": { "type": "string" },
+              "unit": { "type": "string" },
+              "sourceColumns": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "inputFeatures": {
+          "type": "array",
+          "minItems": 79,
+          "maxItems": 79,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "kind",
+              "dtype",
+              "unit",
+              "nullable",
+              "missingCountTrain",
+              "baselineValue",
+              "min",
+              "max",
+              "median",
+              "categories"
+            ],
+            "properties": {
+              "name": { "type": "string" },
+              "kind": { "type": "string", "enum": ["numerical", "ordinal", "categorical"] },
+              "dtype": { "type": "string" },
+              "unit": { "type": "string" },
+              "nullable": { "type": "boolean" },
+              "missingCountTrain": { "type": "integer", "minimum": 0 },
+              "baselineValue": { "type": ["number", "string", "null"] },
+              "min": { "type": ["number", "null"] },
+              "max": { "type": ["number", "null"] },
+              "median": { "type": ["number", "null"] },
+              "categories": {
+                "type": ["array", "null"],
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gridShape",
+        "matrixOrdering",
+        "matrixIndexingConvention",
+        "threeJsGeometryMapping",
+        "xAxis",
+        "yAxis",
+        "zUnit",
+        "zCurrency",
+        "zMinUsd",
+        "zMaxUsd",
+        "zMatrixUsd",
+        "zMatrixLog1p",
+        "baselineFeatures",
+        "baselinePredictionUsd",
+        "baselinePredictionLog1p"
+      ],
+      "properties": {
+        "gridShape": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            { "type": "integer", "const": 50 },
+            { "type": "integer", "const": 50 }
+          ]
+        },
+        "matrixOrdering": {
+          "type": "string",
+          "const": "row_major_y_outer_x_inner"
+        },
+        "matrixIndexingConvention": { "type": "string" },
+        "threeJsGeometryMapping": { "type": "string" },
+        "xAxis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["feature", "label", "unit", "min", "max", "size", "values"],
+          "properties": {
+            "feature": { "type": "string", "const": "GrLivArea" },
+            "label": { "type": "string" },
+            "unit": { "type": "string", "const": "sq_ft" },
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "size": { "type": "integer", "const": 50 },
+            "values": {
+              "type": "array",
+              "minItems": 50,
+              "maxItems": 50,
+              "items": { "type": "integer" }
+            }
+          }
+        },
+        "yAxis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "feature",
+            "label",
+            "unit",
+            "min",
+            "max",
+            "size",
+            "validDiscreteRatings",
+            "values"
+          ],
+          "properties": {
+            "feature": { "type": "string", "const": "OverallQual" },
+            "label": { "type": "string" },
+            "unit": { "type": "string", "const": "rating_1_to_10" },
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "size": { "type": "integer", "const": 50 },
+            "validDiscreteRatings": {
+              "type": "array",
+              "minItems": 10,
+              "maxItems": 10,
+              "items": { "type": "integer" }
+            },
+            "values": {
+              "type": "array",
+              "minItems": 50,
+              "maxItems": 50,
+              "items": { "type": "number" }
+            }
+          }
+        },
+        "zUnit": { "type": "string", "const": "USD" },
+        "zCurrency": { "type": "string", "const": "USD" },
+        "zMinUsd": { "type": "number", "minimum": 1 },
+        "zMaxUsd": { "type": "number", "minimum": 1 },
+        "zMatrixUsd": {
+          "type": "array",
+          "minItems": 50,
+          "maxItems": 50,
+          "items": {
+            "type": "array",
+            "minItems": 50,
+            "maxItems": 50,
+            "items": { "type": "number", "minimum": 1 }
+          }
+        },
+        "zMatrixLog1p": {
+          "type": "array",
+          "minItems": 50,
+          "maxItems": 50,
+          "items": {
+            "type": "array",
+            "minItems": 50,
+            "maxItems": 50,
+            "items": { "type": "number", "minimum": 1 }
+          }
+        },
+        "baselineFeatures": {
+          "type": "object",
+          "minProperties": 79,
+          "maxProperties": 79
+        },
+        "baselinePredictionUsd": { "type": "number", "minimum": 1 },
+        "baselinePredictionLog1p": { "type": "number", "minimum": 1 }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "houseId",
+          "label",
+          "selectionReason",
+          "isRealObservation",
+          "evaluationSplit",
+          "cvFold",
+          "actualPriceUsd",
+          "actualPriceLog1p",
+          "predictedPriceUsd",
+          "predictedPriceLog1p",
+          "oofPredictedPriceUsd",
+          "oofPredictedPriceLog1p",
+          "absoluteErrorUsd",
+          "oofAbsoluteErrorUsd",
+          "relativeErrorPct",
+          "surfaceCoordinates",
+          "features",
+          "engineeredFeatures",
+          "explainability"
+        ],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "houseId": { "type": "integer", "minimum": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "selectionReason": { "type": "string", "minLength": 1 },
+          "isRealObservation": { "type": "boolean", "const": true },
+          "evaluationSplit": { "type": "string", "const": "5_fold_out_of_fold_validation" },
+          "cvFold": { "type": "integer", "minimum": 0, "maximum": 4 },
+          "actualPriceUsd": { "type": "number", "minimum": 1 },
+          "actualPriceLog1p": { "type": "number", "minimum": 1 },
+          "predictedPriceUsd": { "type": "number", "minimum": 1 },
+          "predictedPriceLog1p": { "type": "number", "minimum": 1 },
+          "oofPredictedPriceUsd": { "type": "number", "minimum": 1 },
+          "oofPredictedPriceLog1p": { "type": "number", "minimum": 1 },
+          "absoluteErrorUsd": { "type": "number", "minimum": 0 },
+          "oofAbsoluteErrorUsd": { "type": "number", "minimum": 0 },
+          "relativeErrorPct": { "type": "number", "minimum": 0 },
+          "surfaceCoordinates": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["xGrLivArea", "yOverallQual", "zActualUsd", "zPredictedUsd", "zOofPredictedUsd"],
+            "properties": {
+              "xGrLivArea": { "type": "integer" },
+              "yOverallQual": { "type": "integer" },
+              "zActualUsd": { "type": "number" },
+              "zPredictedUsd": { "type": "number" },
+              "zOofPredictedUsd": { "type": "number" }
+            }
+          },
+          "features": {
+            "type": "object",
+            "minProperties": 79,
+            "maxProperties": 79
+          },
+          "engineeredFeatures": {
+            "type": "object",
+            "minProperties": 9,
+            "maxProperties": 9
+          },
+          "explainability": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "explainerType",
+              "targetScale",
+              "outputUnit",
+              "backgroundSampleCount",
+              "baseValueLog1p",
+              "baseValueUsd",
+              "predictedLog1p",
+              "predictedUsd",
+              "additivitySumLog1p",
+              "additivityDiscrepancyLog1p",
+              "additivityTolerance",
+              "additivityVerified",
+              "topContributions",
+              "contributions"
+            ],
+            "properties": {
+              "explainerType": { "type": "string" },
+              "targetScale": { "type": "string", "const": "log1p_usd" },
+              "outputUnit": { "type": "string", "const": "USD" },
+              "backgroundSampleCount": { "type": "integer", "minimum": 10 },
+              "baseValueLog1p": { "type": "number" },
+              "baseValueUsd": { "type": "number" },
+              "predictedLog1p": { "type": "number" },
+              "predictedUsd": { "type": "number" },
+              "additivitySumLog1p": { "type": "number" },
+              "additivityDiscrepancyLog1p": { "type": "number", "minimum": 0 },
+              "additivityTolerance": { "type": "number", "minimum": 0 },
+              "additivityVerified": { "type": "boolean", "const": true },
+              "topContributions": {
+                "type": "array",
+                "minItems": 5,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["feature", "value", "shapLog1p", "contributionUsd"],
+                  "properties": {
+                    "feature": { "type": "string" },
+                    "value": { "type": ["number", "string", "null"] },
+                    "shapLog1p": { "type": "number" },
+                    "contributionUsd": { "type": "number" }
+                  }
+                }
+              },
+              "contributions": {
+                "type": "array",
+                "minItems": 79,
+                "maxItems": 79,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["feature", "value", "shapLog1p", "contributionUsd"],
+                  "properties": {
+                    "feature": { "type": "string" },
+                    "value": { "type": ["number", "string", "null"] },
+                    "shapLog1p": { "type": "number" },
+                    "contributionUsd": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "methodology",
+        "splitType",
+        "cvFolds",
+        "randomSeed",
+        "sampleCount",
+        "targetUnit",
+        "targetCurrency",
+        "metrics",
+        "metricDefinitions",
+        "actualVsPredicted"
+      ],
+      "properties": {
+        "methodology": { "type": "string" },
+        "splitType": { "type": "string", "const": "5_fold_out_of_fold_cross_validation" },
+        "cvFolds": { "type": "integer", "const": 5 },
+        "randomSeed": { "type": "integer", "const": 42 },
+        "sampleCount": { "type": "integer", "const": 1458 },
+        "targetUnit": { "type": "string", "const": "USD" },
+        "targetCurrency": { "type": "string", "const": "USD" },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rmsle",
+            "cvMeanRmsle",
+            "cvStdRmsle",
+            "maeUsd",
+            "rmseUsd",
+            "medianAeUsd",
+            "mapePct",
+            "r2Usd",
+            "r2Log1p"
+          ],
+          "properties": {
+            "rmsle": { "type": "number", "minimum": 0 },
+            "cvMeanRmsle": { "type": "number", "minimum": 0 },
+            "cvStdRmsle": { "type": "number", "minimum": 0 },
+            "maeUsd": { "type": "number", "minimum": 0 },
+            "rmseUsd": { "type": "number", "minimum": 0 },
+            "medianAeUsd": { "type": "number", "minimum": 0 },
+            "mapePct": { "type": "number", "minimum": 0 },
+            "r2Usd": { "type": "number", "maximum": 1 },
+            "r2Log1p": { "type": "number", "maximum": 1 }
+          }
+        },
+        "metricDefinitions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rmsle", "maeUsd", "rmseUsd", "medianAeUsd", "mapePct", "r2Usd", "r2Log1p"],
+          "properties": {
+            "rmsle": { "type": "string" },
+            "maeUsd": { "type": "string" },
+            "rmseUsd": { "type": "string" },
+            "medianAeUsd": { "type": "string" },
+            "mapePct": { "type": "string" },
+            "r2Usd": { "type": "string" },
+            "r2Log1p": { "type": "string" }
+          }
+        },
+        "actualVsPredicted": {
+          "type": "array",
+          "minItems": 1458,
+          "maxItems": 1458,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "houseId",
+              "fold",
+              "actualUsd",
+              "predictedOofUsd",
+              "actualLog1p",
+              "predictedOofLog1p",
+              "residualLog1p",
+              "errorUsd",
+              "grLivArea",
+              "overallQual"
+            ],
+            "properties": {
+              "houseId": { "type": "integer", "minimum": 1 },
+              "fold": { "type": "integer", "minimum": 0, "maximum": 4 },
+              "actualUsd": { "type": "number", "minimum": 1 },
+              "predictedOofUsd": { "type": "number", "minimum": 1 },
+              "actualLog1p": { "type": "number", "minimum": 1 },
+              "predictedOofLog1p": { "type": "number", "minimum": 1 },
+              "residualLog1p": { "type": "number" },
+              "errorUsd": { "type": "number" },
+              "grLivArea": { "type": "integer", "minimum": 1 },
+              "overallQual": { "type": "integer", "minimum": 1, "maximum": 10 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

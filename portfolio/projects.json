@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": "https://github.com/KN-Vignesh/Projects",
+  "portfolioUrl": "https://vignesh-k-n.is-a.dev/",
+  "projects": [
+    {
+      "id": "vero",
+      "title": "VERO — Evidence-Based GitHub PR Analysis Engine",
+      "tier": "A",
+      "domain": "AI Code Intelligence",
+      "path": "VERO",
+      "readmePath": "VERO/README.md",
+      "stack": ["React 19", "TypeScript", "Express", "SonarQube Rules", "TypeSafe Jev"],
+      "metrics": {
+        "evaluatedPrs": 120,
+        "falsePositiveRatePct": 4.6,
+        "securityRecallPct": 95.8
+      }
+    },
+    {
+      "id": "shiny-agents",
+      "title": "Shiny Agents — Multi-Agent Comparative Framework",
+      "tier": "A",
+      "domain": "Multi-Agent Systems",
+      "path": "Shiny-Agents",
+      "readmePath": "Shiny-Agents/README.md",
+      "stack": ["Python", "FastAPI", "CrewAI", "OpenAI Agents SDK", "LangGraph", "Gemini"]
+    },
+    {
+      "id": "qwen-lora",
+      "title": "Qwen2.5-0.5B Parameter-Efficient LoRA Adaptation",
+      "tier": "A",
+      "domain": "Parameter-Efficient LLM",
+      "path": "Ai-Cookbook/LoraFine-tuning",
+      "readmePath": "Ai-Cookbook/LoraFine-tuning/README.md",
+      "notebookPath": "Ai-Cookbook/LoraFine-tuning/LORA_WITH_QWENN_MODEL.ipynb",
+      "stack": ["PyTorch", "Transformers", "PEFT", "Qwen2.5-0.5B-Instruct"]
+    },
+    {
+      "id": "qlora-adaptation",
+      "title": "QLoRA 4-Bit NF4 Quantized Adaptation",
+      "tier": "A",
+      "domain": "Memory-Efficient LLM",
+      "path": "Ai-Cookbook/QLoraFine-Tuning",
+      "readmePath": "Ai-Cookbook/QLoraFine-Tuning/README.md",
+      "notebookPath": "Ai-Cookbook/QLoraFine-Tuning/QLora_FineTuning.ipynb",
+      "stack": ["PyTorch", "BitsAndBytes", "4-bit NF4", "PEFT"]
+    },
+    {
+      "id": "rag-deepeval",
+      "title": "RAG Pipeline & DeepEval Synthetic Golden Evaluation",
+      "tier": "A",
+      "domain": "Retrieval & AI Evaluation",
+      "path": "Ai-Cookbook/Combined_metric_Calc",
+      "readmePath": "Ai-Cookbook/Combined_metric_Calc/README.md",
+      "notebookPath": "Ai-Cookbook/Combined_metric_Calc/Combined_metric_Calc.ipynb",
+      "stack": ["LangChain", "ChromaDB", "Gemini Embeddings", "DeepEval"]
+    },
+    {
+      "id": "customer-churn",
+      "title": "Intelligent Customer Churn Prediction",
+      "tier": "B",
+      "domain": "Tabular ML & Serving",
+      "path": "projects/customer-churn.md",
+      "readmePath": "projects/customer-churn.md",
+      "notebookPath": "Customer_Churn_Prediction_with_ML.ipynb",
+      "stack": ["Python", "Scikit-learn", "SMOTE", "FastAPI", "Docker"]
+    },
+    {
+      "id": "house-price-prediction",
+      "title": "Ames House Price Prediction & Multi-Model Stacking Regressor",
+      "tier": "B",
+      "domain": "Feature Engineering, Stacking & 3D Surface Explainability",
+      "path": "Data-recipe/House_Price_Prediction",
+      "readmePath": "Data-recipe/House_Price_Prediction/README.md",
+      "notebookPath": "Data-recipe/House_Price_Prediction/House_Prices_Prediction_using_TFDF.ipynb",
+      "exportScriptPath": "Data-recipe/House_Price_Prediction/scripts/export_3d_data.py",
+      "schemaPath": "Data-recipe/House_Price_Prediction/schema/house_price_3d.schema.json",
+      "assets": {
+        "housePrice3dJson": "portfolio/assets/house_price_3d.json",
+        "projectLocal3dJson": "Data-recipe/House_Price_Prediction/assets/house_price_3d.json",
+        "rawGitHubUrl": "https://raw.githubusercontent.com/KN-Vignesh/Projects/main/portfolio/assets/house_price_3d.json",
+        "rawProjectLocalGitHubUrl": "https://raw.githubusercontent.com/KN-Vignesh/Projects/main/Data-recipe/House_Price_Prediction/assets/house_price_3d.json"
+      },
+      "stack": ["Python", "Scikit-learn", "CatBoost", "XGBoost", "LightGBM", "SHAP", "Three.js Data Asset"]
+    },
+    {
+      "id": "titanic-survival",
+      "title": "Titanic Passenger Survival Classification",
+      "tier": "B",
+      "domain": "Supervised Classification",
+      "path": "Data-recipe/Titanic_Model",
+      "readmePath": "Data-recipe/Titanic_Model/README.md",
+      "notebookPath": "Data-recipe/Titanic_Model/Titanic_model.ipynb",
+      "stack": ["Python", "Pandas", "Scikit-learn", "XGBoost"]
+    },
+    {
+      "id": "bert-nlp",
+      "title": "BERT Downstream NLP Workflows",
+      "tier": "B",
+      "domain": "Transformer Pipelines",
+      "path": "Ai-Cookbook/BERT_MODEL",
+      "readmePath": "Ai-Cookbook/BERT_MODEL/README.md",
+      "notebookPath": "Ai-Cookbook/BERT_MODEL/BERT_MODEL.ipynb",
+      "stack": ["Hugging Face Transformers", "Sentence-Transformers", "PyTorch"]
+    },
+    {
+      "id": "cnn-fundamentals",
+      "title": "CNN Computer Vision Preprocessing Fundamentals",
+      "tier": "C",
+      "domain": "Computer Vision",
+      "path": "Ai-Cookbook/CNN-Fundamentals",
+      "readmePath": "Ai-Cookbook/CNN-Fundamentals/README.md",
+      "notebookPath": "Ai-Cookbook/CNN-Fundamentals/CNN_Fundamental_Preprocessing.ipynb",
+      "stack": ["TensorFlow", "Keras", "NumPy"]
+    }
+  ]
+}
