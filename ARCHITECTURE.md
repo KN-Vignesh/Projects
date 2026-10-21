@@ -69,8 +69,18 @@ Projects/
 │   ├── BERT_MODEL/
 │   └── CNN-Fundamentals/
 │
+├── portfolio/                   # Static JSON registry & precomputed 3D assets for Project-Portfolio
+│   ├── projects.json            # Canonical project registry consumed by Project-Portfolio
+│   └── assets/
+│       └── house_price_3d.json  # Precomputed 3D surface, examples, SHAP & evaluation data
+│
 ├── Data-recipe/                 # Classical ML Pipelines
-│   ├── House_Price_Prediction/
+│   ├── House_Price_Prediction/  # Stacking ensemble + 3D surface export pipeline
+│   │   ├── pipeline.py
+│   │   ├── scripts/export_3d_data.py
+│   │   ├── schema/house_price_3d.schema.json
+│   │   ├── assets/house_price_3d.json
+│   │   └── tests/test_export_3d_data.py
 │   └── Titanic_Model/
 │
 └── [Individual Notebooks]       # Standalone experiments

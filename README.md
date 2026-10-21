@@ -146,7 +146,14 @@ python -m unittest Shiny-Agents/tests/test_server_contracts.py
 ```
 *Validates SQLite 24-hour rate limiting, thread memory context formatting, and agent script integrity.*
 
-### 3. Notebook Reproducibility
+### 3. House Price Prediction 3D Surface Export & Validation Tests
+```bash
+python3 scripts/export_3d_data.py
+python3 -m unittest Data-recipe/House_Price_Prediction/tests/test_export_3d_data.py -v
+```
+*Validates model artifact loading, 50×50 `GrLivArea` × `OverallQual` surface grid generation, Draft 2020-12 JSON Schema compliance, held-out 5-fold OOF evaluation metrics, and exact StackingRegressor SHAP additivity.*
+
+### 4. Notebook Reproducibility
 - All Jupyter notebooks contain pre-computed outputs from verified training runs.
 - GPU-dependent training notebooks (`LoraFine-tuning`, `QLoraFine-Tuning`) run in Google Colab (free T4 GPU) or any CUDA-enabled environment.
 

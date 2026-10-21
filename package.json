@@ -13,7 +13,10 @@
     "build:server": "esbuild VERO/server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "test": "tsx VERO/tests/engines.test.ts",
-    "lint": "npm run lint --workspace=vero"
+    "lint": "npm run lint --workspace=vero",
+    "export:house-price-3d": "python3 scripts/export_3d_data.py",
+    "test:house-price-3d": "python3 -m unittest Data-recipe/House_Price_Prediction/tests/test_export_3d_data.py -v",
+    "pr:house-price-3d": "python3 scripts/create_pr.py"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

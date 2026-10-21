@@ -78,7 +78,7 @@ Models were evaluated using 5-fold cross-validation scored on Root Mean Squared 
 
 ### Prerequisites
 ```bash
-pip install numpy pandas scikit-learn xgboost lightgbm catboost matplotlib seaborn
+pip install -r Data-recipe/House_Price_Prediction/requirements.txt
 ```
 
 ### Running the Notebook
@@ -86,8 +86,88 @@ pip install numpy pandas scikit-learn xgboost lightgbm catboost matplotlib seabo
 jupyter notebook Data-recipe/House_Price_Prediction/House_Prices_Prediction_using_TFDF.ipynb
 ```
 
+### Generating the 3D Prediction Surface & Explainability JSON Asset
+```bash
+# Run from the repository root (loads cached model artifact or trains & serializes on first run)
+python3 Data-recipe/House_Price_Prediction/scripts/export_3d_data.py
+
+# Or via the root convenience wrapper:
+python3 scripts/export_3d_data.py
+
+# Force full model retraining and artifact re-serialization before exporting:
+python3 Data-recipe/House_Price_Prediction/scripts/export_3d_data.py --retrain
+
+# Fail fast if the serialized model artifact is missing (CI/CD verification mode):
+python3 Data-recipe/House_Price_Prediction/scripts/export_3d_data.py --no-train-if-missing
+```
+
+### Running the Automated Test Suite
+```bash
+python3 -m unittest Data-recipe/House_Price_Prediction/tests/test_export_3d_data.py -v
+# or with pytest:
+pytest Data-recipe/House_Price_Prediction/tests/test_export_3d_data.py -v
+```
+
+---
+
+## 3D Prediction Surface & Static Portfolio Data Export (`house_price_3d.json`)
+
+To power the interactive 3D prediction surface in the React + TypeScript + Three.js portfolio (`Project-Portfolio`) without requiring a live Python inference backend, this project exports a validated, precomputed static JSON asset (`house_price_3d.json`).
+
+### 1. Model Pipeline & Reproducible Serialization
+- **Source Pipeline (`pipeline.py`):** Faithfully encapsulates the exact workflow from `House_Prices_Prediction_using_TFDF.ipynb`:
+  1. **Outlier Sanitization:** Removes the 2 documented agricultural anomalies where `GrLivArea > 4000` sq ft and `SalePrice < $300,000` (`Id` 524 and `Id` 1299), yielding `1,458` cleaned training rows across `79` raw input features.
+  2. **Target Transformation:** Trains on `y_train = np.log1p(SalePrice)` and inverts predictions via `np.expm1(y_pred)` into `USD ($)`.
+  3. **Domain Feature Engineering (`AmesFeatureEngineer`):** Computes 9 derived features (`TotalSF`, `TotalBath`, `TotalPorchSF`, `HouseAge`, `RemodAge`, `IsRemodeled`, `HasPool`, `HasGarage`, `HasBsmt`) and casts `MSSubClass` to categorical string (`88` engineered features total: `44` numeric, `44` categorical).
+  4. **Preprocessing (`ColumnTransformer`):** Applies `SimpleImputer(strategy='median')` + `RobustScaler()` to the 44 numerical features, and `SimpleImputer(strategy='constant', fill_value='None')` + `OneHotEncoder(handle_unknown='ignore', sparse_output=False)` to the 44 categorical features (`298` preprocessed columns).
+  5. **Stacking Ensemble (`StackingRegressor`):** Combines 7 base estimators (`Ridge`, `Lasso`, `ElasticNet`, `GradientBoostingRegressor`, `XGBoost`, `LightGBM`, `CatBoost`) with a `Ridge(alpha=10.0)` meta-estimator using 5-fold cross-validation (`random_state=42`).
+- **Serialized Artifact (`artifacts/house_price_stacking_pipeline.joblib`):** Stores the fitted `final_pipeline`, 5-fold out-of-fold validation predictions, fold assignments, CV benchmark scores, and dataset SHA-256 checksums so subsequent exports and tests load in `<0.5s` without retraining.
+
+### 2. Surface Grid Generation & Three.js Matrix Ordering
+- **Selected Surface Axes (`50 × 50` = 2,500 pipeline evaluations):**
+  - **X-Axis (`GrLivArea`):** Above-grade living area in square feet (`sq_ft`), spanning the cleaned training range `334` to `4,476` sq ft across 50 strictly increasing integer coordinates (`r = 0.72` with `log1p(SalePrice)`).
+  - **Y-Axis (`OverallQual`):** Overall material and finish quality (`rating_1_to_10`), spanning `1.0` to `10.0` across 50 strictly increasing coordinates (`r = 0.82` with `log1p(SalePrice)`), with discrete integer ratings `1..10` documented in `yAxis.validDiscreteRatings`.
+- **Baseline Feature Fixing (`surface.baselineFeatures`):** All remaining 77 raw input features are held fixed at representative values derived from the cleaned training dataset:
+  - **Numerical & Ordinal Features:** Cleaned training median (preserved as `int` for integer-valued columns, e.g., `YearBuilt = 1973`, `FullBath = 2`, `GarageCars = 2`, `TotalBsmtSF = 991`).
+  - **Categorical Features:** Cleaned training mode (e.g., `Neighborhood = "NAmes"`, `MSZoning = "RL"`, `ExterQual = "TA"`), or `null` (imputed as `"None"`) where >50% of training observations have no such amenity (`Alley`, `PoolQC`, `Fence`, `MiscFeature`).
+- **Matrix Indexing Convention (`row_major_y_outer_x_inner`):**
+  - `zMatrixUsd[row_idx][col_idx]` (and `zMatrixLog1p[row_idx][col_idx]`) stores the genuine pipeline prediction for `OverallQual = yAxis.values[row_idx]` and `GrLivArea = xAxis.values[col_idx]`.
+  - For a Three.js `PlaneGeometry(width, depth, 49, 49)`, vertex `k = row_idx * 50 + col_idx` maps directly to `(x = xAxis.values[col_idx], y_elevation = zMatrixUsd[row_idx][col_idx], z = yAxis.values[row_idx])`.
+  - Every grid cell is computed by executing `final_pipeline.predict()`—never via post-hoc surface interpolation.
+
+### 3. Representative House Examples, Evaluation Metrics & Exact SHAP Explainability
+- **Held-Out Evaluation Split (`evaluation`):**
+  - Uses 5-fold cross-validation out-of-fold (`cross_val_predict` with `KFold(n_splits=5, shuffle=True, random_state=42)`) across all `1,458` cleaned observations. Every point in `evaluation.actualVsPredicted` is predicted by a model trained strictly on the other 4 folds.
+  - Reports held-out metrics in both logarithmic and USD spaces: `rmsle`, `cvMeanRmsle`, `cvStdRmsle`, `maeUsd`, `rmseUsd`, `medianAeUsd`, `mapePct`, `r2Usd`, and `r2Log1p`.
+- **Representative Real Examples (`examples`):**
+  - Exports 10 real observations from the dataset spanning the price distribution (10th, 50th, 75th, 90th, 99th percentiles), off-diagonal surface corners (compact high-grade and spacious modest-grade homes), a historic remodeled residence, a median held-out error benchmark, and a 95th-percentile high-residual diagnostic case.
+  - Each example records both the full-pipeline prediction (`predictedPriceUsd`) and the held-out out-of-fold prediction (`oofPredictedPriceUsd`) alongside its CV fold index.
+- **Exact Additive SHAP Attributions (`examples[*].explainability`):**
+  - Exploits the linearity of the `StackingRegressor`'s `Ridge(alpha=10.0)` meta-estimator ($w_0 + \sum_{k=1}^7 w_k f_k(Z)$) to combine exact closed-form LinearSHAP values for `Ridge`, `Lasso`, and `ElasticNet` with exact interventional `shap.TreeExplainer` values for `GBoost`, `XGBoost`, `LightGBM`, and `CatBoost`.
+  - One-hot encoded categorical indicator columns are summed back to their parent features by Shapley coalition additivity, and the 9 engineered features' attributions are distributed equally to their constituent raw input columns.
+  - **Verified Additivity Identity:** For every exported example, `baseValueLog1p + sum(shapLog1p) == predictedLog1p` holds to machine precision (`< 1e-7`, verified against tolerance `1e-5`). Smooth path-integral scaling also provides dollar attributions (`contributionUsd`) summing to `predictedUsd - baseValueUsd`.
+
+### 4. JSON Schema, Published Asset Paths & Synchronization
+- **JSON Schema:** `Data-recipe/House_Price_Prediction/schema/house_price_3d.schema.json` (Draft 2020-12) and runtime validator `Data-recipe/House_Price_Prediction/schema_validator.py`.
+- **Published Asset Locations:**
+  - Portfolio Asset Path: `portfolio/assets/house_price_3d.json`
+  - Project-Local Asset Path: `Data-recipe/House_Price_Prediction/assets/house_price_3d.json`
+  - Portfolio Registry: `portfolio/projects.json`
+  - Target Raw GitHub URLs (once committed & pushed to `KN-Vignesh/Projects` `main`):
+    - `https://raw.githubusercontent.com/KN-Vignesh/Projects/main/portfolio/assets/house_price_3d.json`
+    - `https://raw.githubusercontent.com/KN-Vignesh/Projects/main/Data-recipe/House_Price_Prediction/assets/house_price_3d.json`
+    - `https://raw.githubusercontent.com/KN-Vignesh/Projects/main/portfolio/projects.json`
+- **Limitations of Precomputed Data & Synchronization:**
+  - Because the 3D surface varies `GrLivArea` and `OverallQual` while holding the other 77 features at their training baselines, real houses (which differ in neighborhood, basement area, lot size, garage capacity, and build year) naturally sit above or below the baseline surface slice. The exported `examples` include full 79-feature SHAP breakdowns to explain this exact gap between the 2D baseline slice and each real house's multi-dimensional prediction.
+  - Whenever `train.csv` or model hyperparameters in `pipeline.py` are updated, run `python3 Data-recipe/House_Price_Prediction/scripts/export_3d_data.py --retrain` followed by `pytest Data-recipe/House_Price_Prediction/tests/test_export_3d_data.py` to atomically regenerate and validate the JSON asset.
+
 ## Project Files
 - `House_Prices_Prediction_using_TFDF.ipynb`: Executed notebook with complete residual diagnostic plots and benchmarks.
+- `pipeline.py`: Reproducible training, serialization, prediction, and exact Stacking SHAP explainability module.
+- `schema_validator.py` & `schema/house_price_3d.schema.json`: JSON Schema and numerical invariant validator.
+- `scripts/export_3d_data.py`: Deterministic, atomic CLI exporter for `house_price_3d.json`.
+- `assets/house_price_3d.json`: Generated 3D surface, examples, SHAP, and evaluation asset.
+- `tests/test_export_3d_data.py`: Automated unit and integration test suite.
 - `Dataset/train.csv` & `Dataset/test.csv`: Ames Housing raw tabular data.
 - `submission.csv`: Final generated predictions formatted for competition evaluation.
 
@@ -97,3 +177,4 @@ jupyter notebook Data-recipe/House_Price_Prediction/House_Prices_Prediction_usin
 
 ## License
 MIT License. Developed by Vignesh K N.
+
